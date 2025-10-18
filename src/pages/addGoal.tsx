@@ -3,6 +3,23 @@ import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown'; 
 
 
+async function saveGoalToServer(goal: {
+  type: string;
+  scale?: string;
+  amount?: number;
+  description?: string;
+}) {
+  const res = await fetch('/api/goals', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(goal)
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || res.statusText);
+  }
+  return res.json();
+}
 
 export default function AddGoal() {
   const title = "Add Goal"
@@ -29,6 +46,9 @@ export default function AddGoal() {
       {selected === "Custom" && <CustomForm />}
       <br></br>
     <DropDown items={PreExistingGoals} title={title2} />
+  <hr />
+  <h3>Saved goals</h3>
+  <GoalsList />
     </Fragment>
 }
 
@@ -46,9 +66,22 @@ function CalForm() {
     setCalories(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Goal set: ${calories} calories per ${scale}`);
+    try {
+      const payload = {
+        type: 'Caloric',
+        scale,
+        amount: calories === '' ? undefined : Number(calories)
+      };
+      const saved = await saveGoalToServer(payload);
+      // success
+      alert(`Saved: ${saved.type} goal`);
+      setCalories('');
+      setScale(scales[0]);
+    } catch (err: any) {
+      alert('Save failed: ' + (err.message || err));
+    }
   };
 
   return (
@@ -74,6 +107,49 @@ function CalForm() {
   );
 }
 
+function GoalsList() {
+  const [goals, setGoals] = useState<Array<any>>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    fetch('/api/goals')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!mounted) return;
+        setGoals(data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        setError(err.message || 'Failed to load');
+        setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) return <div>Loading goals...</div>;
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (!goals.length) return <div>No saved goals yet.</div>;
+
+  return (
+    <ul>
+      {goals.map((g: any) => (
+        <li key={g._id}>
+          <strong>{g.type}</strong>
+          {g.amount !== undefined && <> — {g.amount}</>}
+          {g.scale && <> / {g.scale}</>}
+          {g.description && <> — {g.description}</>}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 
 
 function ProteinForm() {
@@ -90,9 +166,22 @@ function ProteinForm() {
     setProtein(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Goal set: ${protein} grams per ${scale}`);
+    try {
+      const payload = {
+        type: 'Protein',
+        scale,
+        amount: protein === '' ? undefined : Number(protein)
+      };
+      const saved = await saveGoalToServer(payload);
+      // success
+      alert(`Saved: ${saved.type} goal`);
+      setProtein('');
+      setScale(scales[0]);
+    } catch (err: any) {
+      alert('Save failed: ' + (err.message || err));
+    }
   };
 
 
@@ -131,9 +220,22 @@ function FiberForm() {
     setFiber(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Goal set: ${fiber} grams of fiber per ${scale}`);
+    try {
+      const payload = {
+        type: 'Fiber',
+        scale,
+        amount: fiber === '' ? undefined : Number(fiber)
+      };
+      const saved = await saveGoalToServer(payload);
+      // success
+      alert(`Saved: ${saved.type} goal`);
+      setFiber('');
+      setScale(scales[0]);
+    } catch (err: any) {
+      alert('Save failed: ' + (err.message || err));
+    }
   };
 
   return (
@@ -183,11 +285,22 @@ function VitaminForm() {
     setVitaminAmount(Number(e.target.value));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      `Goal set: ${vitaminAmount} grams of vitamin ${vitamin} per ${scale}`
-    );
+    try {
+      const payload = {
+        type: 'Vitamin',
+        scale,
+        amount: vitamin === '' ? undefined : Number(vitamin)
+      };
+      const saved = await saveGoalToServer(payload);
+      // success
+      alert(`Saved: ${saved.type} goal`);
+      setVitamin('');
+      setScale(scales[0]);
+    } catch (err: any) {
+      alert('Save failed: ' + (err.message || err));
+    }
   };
 
   return (
@@ -240,9 +353,18 @@ function CustomForm() {
     setDescription(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Custom goal set: ${description}`);
+    try {
+      const payload = {
+        type: 'Caloric', description
+      };
+      const saved = await saveGoalToServer(payload);
+      // success
+      alert(`Saved: ${saved.type} goal`);
+    } catch (err: any) {
+      alert('Save failed: ' + (err.message || err));
+    }
   };
 
   return (
