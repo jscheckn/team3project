@@ -2,18 +2,29 @@ import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
 
 export default function AddMeal() {
-  const [inputValue, setInputValue] = useState('');
-  const [uploadMode, setUploadMode] = useState<'none' | 'webcam' | 'upload'>('none');
-  const [uploadDisplay, setUploadDisplay] = useState<'none' | 'display'>('none');
-  
+  const [name, setName] = useState('');
+  const [calories, setCalories] = useState<number | ''>('');
+  const [notes, setNotes] = useState('');
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
+  const [uploadMode, setUploadMode] = useState<'none' | 'webcam' | 'upload'>('none');
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
+  const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => setCalories(e.target.value === '' ? '' : Number(e.target.value));
+  const handleNotesChange = (e: ChangeEvent<HTMLInputElement>) => setNotes(e.target.value);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Submitted value:', inputValue);
+    //REPLACE WITH POST REQUEST LATER
+    console.log('Manual meal submit:', { name, calories, notes, file: selectedFile });
+    // clear form
+    setName('');
+    setCalories('');
+    setNotes('');
+    setSelectedFile(null);
+    setFilePreview(null);
+    setUploadMode('none');
   };
 
   const handleTakePhoto = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,60 +32,71 @@ export default function AddMeal() {
     setUploadMode('webcam');
   };
 
-  const handleUploadPhoto = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUploadClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setUploadMode('upload');
   };
 
-  const DisplaySubmit  = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setUploadDisplay('display');
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) {
+      setSelectedFile(f);
+      const url = URL.createObjectURL(f);
+      setFilePreview(url);
+    }
   };
 
   return (
     <Fragment>
-      <h1>Meal Page</h1>
-      <h3>Add a meal:</h3>
+      <h1>Meals</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="MealName">Name your meal:</label>
-        <input
-          type="text"
-          id="MealName"
-          value={inputValue}
-          onChange={handleChange}
-        />
-        {/* upload or take photo */}
-      <form id="TakeOrUpload">
-        <button id="TakePhoto" onClick={handleTakePhoto}>
-          Take Image
-        </button>
-        <button id="UploadPhoto" onClick={handleUploadPhoto}>
-          Upload Image
-        </button>
-      </form>
+      {/*Manual addition, can remove later if necessary */}
+      <section>
+        <h2>Manually add a meal</h2>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="meal-name">Meal name</label>
+          <input id="meal-name" type="text" value={name} onChange={handleNameChange} />
 
-      {uploadMode === 'webcam' && (
-        <div className="photo">
-          <CustomWebcam />
+          <label htmlFor="meal-calories">Calories</label>
+          <input id="meal-calories" type="number" value={calories} onChange={handleCaloriesChange} />
+
+          <label htmlFor="meal-notes">Notes</label>
+          <input id="meal-notes" type="text" value={notes} onChange={handleNotesChange} />
+
+          <div style={{ marginTop: 10 }}>
+            <button type="submit">Save meal</button>
+          </div>
+        </form>
+      </section>
+
+      <hr />
+
+      {/* Photo uploading */}
+      <section>
+        <h3>Add photo (optional for now)</h3>
+        <div>
+          <button onClick={handleTakePhoto}>Take Image</button>
+          <button onClick={handleUploadClick}>Upload Image</button>
         </div>
-      )}
 
-      {uploadMode === 'upload' && (
-        <div className="upload-section">
-          <form>
-            <label htmlFor="fileUpload">Upload an image:</label>
-            <input type="file" id="fileUpload" onClick={DisplaySubmit} accept="image/*" />
-            {uploadDisplay === 'display' && (
-              <button id="SendImageToAI">Submit</button>
-              )}
-          </form>
-        </div>
-      )}
-        {/* ADD THE SUBMIT AT THE END  */}
-        <button type="submit">Submit</button>
-      </form>
-      
+        {uploadMode === 'webcam' && (
+          <div style={{ marginTop: 10 }}>
+            <CustomWebcam />
+          </div>
+        )}
+
+        {uploadMode === 'upload' && (
+          <div style={{ marginTop: 10 }}>
+            <label htmlFor="fileUpload">Upload an image</label>
+            <input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} />
+            {filePreview && (
+              <div style={{ marginTop: 10 }}>
+                <img src={filePreview} alt="preview" style={{ maxWidth: 300 }} />
+              </div>
+            )}
+          </div>
+        )}
+      </section>
     </Fragment>
   );
 }
