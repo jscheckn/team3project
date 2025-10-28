@@ -45,14 +45,12 @@ export default function AddMeal() {
           onChange={handleChange}
         />
         {/* upload or take photo */}
-      <form id="TakeOrUpload">
         <button id="TakePhoto" onClick={handleTakePhoto}>
           Take Image
         </button>
         <button id="UploadPhoto" onClick={handleUploadPhoto}>
           Upload Image
         </button>
-      </form>
 
       {uploadMode === 'webcam' && (
         <div className="photo">
