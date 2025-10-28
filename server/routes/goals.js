@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 // GET /api/goals - return all goals (most recent first)
 router.get('/', async (req, res) => {
   try {
-    const goals = await Goal.find().exec();
+    const goals = await Goal.find().sort({ createdAt: -1 }).exec();
     res.json(goals);
   } catch (err) {
     console.error('Failed to fetch goals:', err);
