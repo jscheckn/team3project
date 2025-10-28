@@ -1,6 +1,27 @@
 import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
 
+async function saveMealToServer(meal: {
+    items: {
+        name: string;
+        calories?: number;
+        protein?: number;
+        // add more nutrition fields later
+    }[],
+    notes?: string
+}) {
+    const res = await fetch('/api/meals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(meal)
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || res.statusText);
+    }
+    return res.json();
+}
+
 export default function AddMeal() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
@@ -14,10 +35,17 @@ export default function AddMeal() {
   const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => setCalories(e.target.value === '' ? '' : Number(e.target.value));
   const handleNotesChange = (e: ChangeEvent<HTMLInputElement>) => setNotes(e.target.value);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //REPLACE WITH POST REQUEST LATER
-    console.log('Manual meal submit:', { name, calories, notes, file: selectedFile });
+    // TODO: Make use of photo data here
+    const payload = {
+      items: [{
+        name,
+        calories: calories === '' ? undefined : calories,
+      }],
+      notes
+    };
+    await saveMealToServer(payload);
     // clear form
     setName('');
     setCalories('');

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const GoalSchema = new Schema({
+  // userId: { type: String, required: true, index: true },
   type: { type: String, required: true },
   scale: { type: String },
   amount: { type: Number },
