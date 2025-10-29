@@ -22,7 +22,7 @@ async function saveMealToServer(meal: {
     return res.json();
 }
 
-export default function AddMeal() {
+export function AddMeal() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
@@ -132,7 +132,7 @@ export default function AddMeal() {
   );
 }
 
-function MealsList() {
+export function MealsList() {
   const [meals, setMeals] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
