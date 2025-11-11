@@ -21,7 +21,7 @@ async function saveGoalToServer(goal: {
   return res.json();
 }
 
-export default function AddGoal() {
+export function AddGoal() {
   const title = "Add Goal"
   const typesOfGoals =["", "Caloric", "Protein", "Fiber", "Vitamin", "Custom"]
   const [selected, setSelected] = useState(typesOfGoals[0]);
@@ -107,7 +107,7 @@ function CalForm() {
   );
 }
 
-function GoalsList() {
+export function GoalsList() {
   const [goals, setGoals] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
