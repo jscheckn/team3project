@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
 
-async function saveMealToServer(meal: {
+export async function saveMealToServer(meal: {
     items: {
         name: string;
         calories?: number;

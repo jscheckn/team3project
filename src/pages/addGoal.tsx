@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown'; 
 
-
-async function saveGoalToServer(goal: {
+export async function saveGoalToServer(goal: {
   type: string;
   scale?: string;
   amount?: number;
