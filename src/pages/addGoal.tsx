@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown';
 import saveToServer from '../data/saveToServer';
-import {enumValue, enumValues, GoalType} from "../data/types";
+import {enumValue, enumValues, GoalType, GoalScale} from "../data/types";
 
 export async function saveGoalToServer(goal: {
   type: GoalType;
-  scale?: string;
+  scale?: GoalScale;
   amount?: number;
   description?: string;
 }) {
@@ -46,12 +46,12 @@ export function AddGoal() {
 
 function CalForm() {
   const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
+  const scales = enumValues(GoalScale);
   const [scale, setScale] = useState(scales[0]);
   const [calories, setCalories] = useState("");
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleCaloriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,12 +146,12 @@ export function GoalsList() {
 
 function ProteinForm() {
   const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
+  const scales = enumValues(GoalScale);
   const [scale, setScale] = useState(scales[0]);
   const [protein, setProtein] = useState("");
 
-    const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+  const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleProteinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,12 +200,12 @@ function ProteinForm() {
 
 function FiberForm() {
   const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
+  const scales = enumValues(GoalScale);
   const [scale, setScale] = useState(scales[0]);
   const [fiber, setFiber] = useState("");
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleFiberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -259,14 +259,14 @@ function FiberForm() {
 }
 
 function VitaminForm() {
-  const scales = ["week", "day", "meal"];
+  const scales = enumValues(GoalScale);
   const vitamins = ["A", "C", "D", "E", "K", "B"];
   const [scale, setScale] = useState(scales[0]);
   const [vitamin, setVitamin] = useState(vitamins[0]);
   const [vitaminAmount, setVitaminAmount] = useState(0);
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleVitaminChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

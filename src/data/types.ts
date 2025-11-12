@@ -6,6 +6,12 @@ export enum GoalType {
   Custom = 'Custom'
 }
 
+export enum GoalScale {
+  Week = 'Week',
+  Day = 'Day',
+  Meal = 'Meal'
+}
+
 export function enumValues<E extends Record<string, string | number>>(e: E): E[keyof E][] {
   return Object.values(e).filter((v) => typeof v !== 'string' || !(v in e)) as E[keyof E][];
 }

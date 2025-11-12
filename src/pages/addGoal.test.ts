@@ -1,11 +1,11 @@
 import {expect, test, vi} from 'vitest';
 import {saveGoalToServer} from "./addGoal";
-import {GoalType} from "../data/types";
+import {GoalScale, GoalType} from "../data/types";
 
 test('saveGoalToServer', async () => {
   const goal = {
     type: GoalType.Caloric,
-    scale: 'Week',
+    scale: GoalScale.Week,
     amount: 42,
     description: 'Hello world'
   }
