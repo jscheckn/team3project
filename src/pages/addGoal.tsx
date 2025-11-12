@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown';
 import saveToServer from '../data/saveToServer';
+import {enumValue, enumValues, GoalType} from "../data/types";
 
 export async function saveGoalToServer(goal: {
-  type: string;
+  type: GoalType;
   scale?: string;
   amount?: number;
   description?: string;
@@ -14,12 +15,12 @@ export async function saveGoalToServer(goal: {
 
 export function AddGoal() {
   const title = "Add Goal"
-  const typesOfGoals =["", "Caloric", "Protein", "Fiber", "Vitamin", "Custom"]
+  const typesOfGoals = enumValues(GoalType);
   const [selected, setSelected] = useState(typesOfGoals[0]);
 
     // handle dropdown changes
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value);
+    setSelected(enumValue(GoalType, e.target.value));
   };
 
 
@@ -30,11 +31,11 @@ export function AddGoal() {
     <h3>Lets Check Out your Goals</h3>
     <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
     <br></br>
-      {selected === "Caloric" && <CalForm />}
-      {selected === "Protein" && <ProteinForm />}
-      {selected === "Fiber" && <FiberForm />}
-      {selected === "Vitamin" && <VitaminForm />}
-      {selected === "Custom" && <CustomForm />}
+      {selected === GoalType.Caloric && <CalForm />}
+      {selected === GoalType.Protein && <ProteinForm />}
+      {selected === GoalType.Fiber && <FiberForm />}
+      {selected === GoalType.Vitamin && <VitaminForm />}
+      {selected === GoalType.Custom && <CustomForm />}
       <br></br>
     <DropDown items={PreExistingGoals} title={title2} />
   <hr />
@@ -61,7 +62,7 @@ function CalForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Caloric',
+        type: GoalType.Caloric,
         scale,
         amount: calories === '' ? undefined : Number(calories)
       };
@@ -161,7 +162,7 @@ function ProteinForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Protein',
+        type: GoalType.Protein,
         scale,
         amount: protein === '' ? undefined : Number(protein)
       };
@@ -215,7 +216,7 @@ function FiberForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Fiber',
+        type: GoalType.Fiber,
         scale,
         amount: fiber === '' ? undefined : Number(fiber)
       };
@@ -280,7 +281,7 @@ function VitaminForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Vitamin',
+        type: GoalType.Vitamin,
         scale,
         amount: vitamin === '' ? undefined : Number(vitamin)
       };
@@ -348,7 +349,7 @@ function CustomForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Caloric', description
+        type: GoalType.Caloric, description
       };
       const saved = await saveGoalToServer(payload);
       // success
