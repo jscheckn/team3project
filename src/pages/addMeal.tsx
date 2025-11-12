@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
+import saveToServer from '../data/saveToServer';
 
 export async function saveMealToServer(meal: {
     items: {
@@ -10,16 +11,7 @@ export async function saveMealToServer(meal: {
     }[],
     notes?: string
 }) {
-    const res = await fetch('/api/meals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(meal)
-    });
-    if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || res.statusText);
-    }
-    return res.json();
+    return saveToServer('/api/meals', meal);
 }
 
 export function AddMeal() {

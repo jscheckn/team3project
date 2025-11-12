@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
-import DropDown from '../Components/DropDown'; 
+import DropDown from '../Components/DropDown';
+import saveToServer from '../data/saveToServer';
 
 export async function saveGoalToServer(goal: {
   type: string;
@@ -8,16 +9,7 @@ export async function saveGoalToServer(goal: {
   amount?: number;
   description?: string;
 }) {
-  const res = await fetch('/api/goals', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(goal)
-  });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || res.statusText);
-  }
-  return res.json();
+  return saveToServer('/api/goals', goal);
 }
 
 export function AddGoal() {
