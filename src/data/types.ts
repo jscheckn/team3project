@@ -16,6 +16,6 @@ export function enumValues<E extends Record<string, string | number>>(e: E): E[k
   return Object.values(e).filter((v) => typeof v !== 'string' || !(v in e)) as E[keyof E][];
 }
 
-export function enumValue<E extends Record<string, string | number>>(e: E, k: string | number) {
+export function enumValue<E extends Record<string, string | number>>(e: E, k: string | number): E[keyof E] {
   return e[k as keyof E];
 }
