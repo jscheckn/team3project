@@ -4,6 +4,8 @@ import { Fragment } from "react/jsx-runtime";
 import AddMeal from './pages/addMeal';
 import AddGoal from './pages/addGoal';
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import LogIn from "./pages/logIn";
+import SignUp from "./pages/signUp";
 
 
 function App(){
@@ -14,6 +16,8 @@ function App(){
         <Route path="/" element={<h1>Home</h1>} />
         <Route path="/addMeal" element={<AddMeal />} />
         <Route path="/addGoal" element={<AddGoal />} />
+        <Route path="/logIn" element={<LogIn />} />
+        <Route path="/signUp" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );

@@ -12,6 +12,9 @@
             <li><Link to="/addMeal">Add Meal</Link></li>
             <li><Link to="/addGoal">Add Goal</Link></li>
           </ul>
+          <ul className="login-links">
+            <li><Link to="/logIn">Login</Link></li>
+          </ul>
           <hr></hr>
         </nav>
       );
