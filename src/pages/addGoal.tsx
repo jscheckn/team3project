@@ -3,7 +3,7 @@ import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown'; 
 
 
-async function saveGoalToServer(goal: {
+export async function saveGoalToServer(goal: {
   type: string;
   scale?: string;
   amount?: number;
@@ -20,6 +20,10 @@ async function saveGoalToServer(goal: {
   }
   return res.json();
 }
+
+// gloabal setting reduced reduendacy 
+const title = "Time Scale";
+const scales = ["week", "day", "meal"];
 
 export default function AddGoal() {
   const title = "Add Goal"
@@ -52,9 +56,8 @@ export default function AddGoal() {
     </Fragment>
 }
 
-function CalForm() {
-  const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
+
+export function CalForm() {
   const [scale, setScale] = useState(scales[0]);
   const [calories, setCalories] = useState("");
 
@@ -107,6 +110,7 @@ function CalForm() {
   );
 }
 
+
 function GoalsList() {
   const [goals, setGoals] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
@@ -153,8 +157,6 @@ function GoalsList() {
 
 
 function ProteinForm() {
-  const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
   const [scale, setScale] = useState(scales[0]);
   const [protein, setProtein] = useState("");
 
@@ -207,8 +209,6 @@ function ProteinForm() {
 }
 
 function FiberForm() {
-  const title = "Time Scale";
-  const scales = ["week", "day", "meal"];
   const [scale, setScale] = useState(scales[0]);
   const [fiber, setFiber] = useState("");
 
@@ -267,7 +267,6 @@ function FiberForm() {
 }
 
 function VitaminForm() {
-  const scales = ["week", "day", "meal"];
   const vitamins = ["A", "C", "D", "E", "K", "B"];
   const [scale, setScale] = useState(scales[0]);
   const [vitamin, setVitamin] = useState(vitamins[0]);

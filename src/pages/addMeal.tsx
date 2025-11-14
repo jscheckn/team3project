@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
+// import saveMealToServer from '../Components/saveMealToSever';
 
-async function saveMealToServer(meal: {
+export async function saveMealToServer(meal: {
     items: {
         name: string;
         calories?: number;
@@ -21,6 +22,8 @@ async function saveMealToServer(meal: {
     }
     return res.json();
 }
+
+
 
 export default function AddMeal() {
   const [name, setName] = useState('');
@@ -73,6 +76,12 @@ export default function AddMeal() {
       setFilePreview(url);
     }
   };
+  useEffect(() => {
+  return () => {
+    if (filePreview) URL.revokeObjectURL(filePreview)
+  }
+}, [filePreview])
+
 
   return (
     <Fragment>
@@ -101,7 +110,7 @@ export default function AddMeal() {
 
       {/* Photo uploading */}
       <section>
-        <h3>Add photo (optional for now)</h3>
+        <h3>Add photo</h3>
         <div>
           <button onClick={handleTakePhoto}>Take Image</button>
           <button onClick={handleUploadClick}>Upload Image</button>
@@ -128,3 +137,4 @@ export default function AddMeal() {
     </Fragment>
   );
 }
+

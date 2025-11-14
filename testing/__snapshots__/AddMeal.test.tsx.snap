@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AddMeal webcam snapshot test shows webcam when "Take Image" is clicked 1`] = `
+<DocumentFragment>
+  <h1>
+    Meals
+  </h1>
+  <section>
+    <h2>
+      Manually add a meal
+    </h2>
+    <form>
+      <label
+        for="meal-name"
+      >
+        Meal name
+      </label>
+      <input
+        id="meal-name"
+        type="text"
+        value=""
+      />
+      <label
+        for="meal-calories"
+      >
+        Calories
+      </label>
+      <input
+        id="meal-calories"
+        type="number"
+        value=""
+      />
+      <label
+        for="meal-notes"
+      >
+        Notes
+      </label>
+      <input
+        id="meal-notes"
+        type="text"
+        value=""
+      />
+      <div
+        style="margin-top: 10px;"
+      >
+        <button
+          type="submit"
+        >
+          Save meal
+        </button>
+      </div>
+    </form>
+  </section>
+  <hr />
+  <section>
+    <h3>
+      Add photo (optional for now)
+    </h3>
+    <div>
+      <button>
+        Take Image
+      </button>
+      <button>
+        Upload Image
+      </button>
+    </div>
+    <div
+      style="margin-top: 10px;"
+    >
+      <div
+        data-testid="mock-webcam"
+      >
+        Mock Webcam
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
