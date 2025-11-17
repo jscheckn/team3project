@@ -13,7 +13,8 @@ export enum GoalScale {
 }
 
 export function enumValues<E extends Record<string, string | number>>(e: E): E[keyof E][] {
-  return Object.values(e).filter((v) => typeof v !== 'string' || !(v in e)) as E[keyof E][];
+  const values = Object.values(e);
+  return values.filter(v => !(e[v] in values)) as E[keyof E][];
 }
 
 export function enumValue<E extends Record<string, string | number>>(e: E, k: string | number): E[keyof E] {
