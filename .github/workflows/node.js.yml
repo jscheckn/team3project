@@ -8,6 +8,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -29,4 +30,3 @@ jobs:
     - run: npm ci
     - run: npm run build
     - run: npm test --if-present
-    - run: npm install typescript@latest --save-dev
