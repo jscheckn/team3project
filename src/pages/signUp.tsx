@@ -49,9 +49,9 @@ function SignUp() {
 
 
                 <input
-                    type="ConfrimPassword"
-                    {...register("confrimPassword", { required: true })}
-                    placeholder=" Confrim Password"
+                    type="password"
+                    {...register("confirmPassword", { required: true })}
+                    placeholder="Confirm Password"
                 />
                 {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 

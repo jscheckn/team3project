@@ -48,7 +48,7 @@ describe('AddMeal page', () => {
     await saveMealToServer(meal)
   })
 
-  it('showsi mage after taken', async () => {
+  it('shows image after taken', async () => {
     render(<AddMeal />)
 
     // take pic 
