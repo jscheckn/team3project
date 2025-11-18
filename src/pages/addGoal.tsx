@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
-import DropDown from '../Components/DropDown'; 
-
+import DropDown from '../Components/DropDown';
+import saveToServer from '../data/saveToServer';
+import {enumValue, enumValues, GoalType, GoalScale} from "../data/types";
 
 export async function saveGoalToServer(goal: {
-  type: string;
-  scale?: string;
+  type: GoalType;
+  scale?: GoalScale;
   amount?: number;
   description?: string;
 }) {
-  const res = await fetch('/api/goals', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(goal)
-  });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || res.statusText);
-  }
-  return res.json();
+  return saveToServer('/api/goals', goal);
 }
 
-// gloabal setting reduced reduendacy 
+// gloabal setting reduced reduendacy
 const title = "Time Scale";
-const scales = ["week", "day", "meal"];
+const scales = enumValues(GoalScale);
 
-export default function AddGoal() {
+export function AddGoal() {
   const title = "Add Goal"
-  const typesOfGoals =["", "Caloric", "Protein", "Fiber", "Vitamin", "Custom"]
+  const typesOfGoals = enumValues(GoalType);
   const [selected, setSelected] = useState(typesOfGoals[0]);
 
     // handle dropdown changes
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value);
+    setSelected(enumValue(GoalType, e.target.value));
   };
 
 
@@ -43,11 +35,11 @@ export default function AddGoal() {
     <h3>Lets Check Out your Goals</h3>
     <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
     <br></br>
-      {selected === "Caloric" && <CalForm />}
-      {selected === "Protein" && <ProteinForm />}
-      {selected === "Fiber" && <FiberForm />}
-      {selected === "Vitamin" && <VitaminForm />}
-      {selected === "Custom" && <CustomForm />}
+      {selected === GoalType.Caloric && <CalForm />}
+      {selected === GoalType.Protein && <ProteinForm />}
+      {selected === GoalType.Fiber && <FiberForm />}
+      {selected === GoalType.Vitamin && <VitaminForm />}
+      {selected === GoalType.Custom && <CustomForm />}
       <br></br>
     <DropDown items={PreExistingGoals} title={title2} />
   <hr />
@@ -56,13 +48,12 @@ export default function AddGoal() {
     </Fragment>
 }
 
-
 export function CalForm() {
   const [scale, setScale] = useState(scales[0]);
   const [calories, setCalories] = useState("");
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleCaloriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +64,7 @@ export function CalForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Caloric',
+        type: GoalType.Caloric,
         scale,
         amount: calories === '' ? undefined : Number(calories)
       };
@@ -110,8 +101,7 @@ export function CalForm() {
   );
 }
 
-
-function GoalsList() {
+export function GoalsList() {
   const [goals, setGoals] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -160,8 +150,8 @@ function ProteinForm() {
   const [scale, setScale] = useState(scales[0]);
   const [protein, setProtein] = useState("");
 
-    const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+  const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleProteinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +162,7 @@ function ProteinForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Protein',
+        type: GoalType.Protein,
         scale,
         amount: protein === '' ? undefined : Number(protein)
       };
@@ -213,7 +203,7 @@ function FiberForm() {
   const [fiber, setFiber] = useState("");
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleFiberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,7 +214,7 @@ function FiberForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Fiber',
+        type: GoalType.Fiber,
         scale,
         amount: fiber === '' ? undefined : Number(fiber)
       };
@@ -273,7 +263,7 @@ function VitaminForm() {
   const [vitaminAmount, setVitaminAmount] = useState(0);
 
   const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(e.target.value);
+    setScale(enumValue(GoalScale, e.target.value));
   };
 
   const handleVitaminChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -288,7 +278,7 @@ function VitaminForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Vitamin',
+        type: GoalType.Vitamin,
         scale,
         amount: vitamin === '' ? undefined : Number(vitamin)
       };
@@ -356,7 +346,7 @@ function CustomForm() {
     e.preventDefault();
     try {
       const payload = {
-        type: 'Caloric', description
+        type: GoalType.Caloric, description
       };
       const saved = await saveGoalToServer(payload);
       // success

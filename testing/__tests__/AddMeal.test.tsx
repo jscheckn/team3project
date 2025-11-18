@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
-import AddMeal from '../../src/pages/AddMeal'
+import {AddMeal} from '../../src/pages/AddMeal'
 import CustomWebcam from '../../src/Components/webCam'
 import { useState } from 'react'
 import '@testing-library/jest-dom/vitest';
