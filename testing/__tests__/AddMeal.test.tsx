@@ -2,10 +2,10 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
-import {AddMeal} from '../../src/pages/AddMeal'
+import {AddMeal, saveMealToServer} from '../../src/pages/AddMeal'
 import CustomWebcam from '../../src/Components/webCam'
 import { useState } from 'react'
-import '@testing-library/jest-dom/vitest';
+import '@testing-library/jest-dom/vitest'
 
 
 
@@ -29,6 +29,25 @@ vi.mock('../../src/Components/webCam', () => {
 })
 
 describe('AddMeal page', () => {
+  it('saves meals to the server', async () => {
+    const meal = {
+      items: [
+        {name: 'foo', calories: 100},
+        {name: 'bar', protein: 200}
+      ],
+      notes: 'Hello world'
+    }
+    // @ts-ignore
+    vi.spyOn(globalThis, 'fetch').mockImplementationOnce((path, request) => {
+      expect(path).toEqual('/api/meals')
+      expect(request?.method).toEqual('POST')
+      expect(request?.headers).toEqual({'Content-Type': 'application/json'})
+      expect(request?.body).toEqual(JSON.stringify(meal))
+      return Promise.resolve({ok: true, json: () => Promise.resolve()})
+    })
+    await saveMealToServer(meal)
+  })
+
   it('showsi mage after taken', async () => {
     render(<AddMeal />)
 

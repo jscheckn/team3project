@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect } from 'vitest'
-import {AddGoal} from '../../src/pages/addGoal'
+import {describe, it, expect, vi} from 'vitest'
+import {AddGoal, saveGoalToServer} from '../../src/pages/addGoal'
 import {GoalScale, GoalType} from '../../src/data/types'
 
 // https://vitest.dev/guide/browser/component-testing.html
@@ -10,6 +10,24 @@ import {GoalScale, GoalType} from '../../src/data/types'
 // this makes it cleaner 
 
 describe('AddGoal page', () => {
+  it('saves goals to the server', async () => {
+    const goal = {
+      type: GoalType.Caloric,
+      scale: GoalScale.Week,
+      amount: 42,
+      description: 'Hello world'
+    }
+    // @ts-ignore
+    vi.spyOn(globalThis, 'fetch').mockImplementationOnce((path, request) => {
+      expect(path).toEqual('/api/goals')
+      expect(request?.method).toEqual('POST')
+      expect(request?.headers).toEqual({'Content-Type': 'application/json'})
+      expect(request?.body).toEqual(JSON.stringify(goal))
+      return Promise.resolve({ok: true, json: () => Promise.resolve()})
+    })
+    await saveGoalToServer(goal)
+  })
+
   it('switches between goals', async () => {
     render(<AddGoal />)
 
