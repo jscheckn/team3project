@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
-// import saveMealToServer from '../Components/saveMealToSever';
+import saveToServer from '../data/saveToServer';
 
 export async function saveMealToServer(meal: {
     items: {
@@ -11,21 +11,10 @@ export async function saveMealToServer(meal: {
     }[],
     notes?: string
 }) {
-    const res = await fetch('/api/meals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(meal)
-    });
-    if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || res.statusText);
-    }
-    return res.json();
+    return saveToServer('/api/meals', meal);
 }
 
-
-
-export default function AddMeal() {
+export function AddMeal() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
@@ -134,7 +123,58 @@ export default function AddMeal() {
           </div>
         )}
       </section>
+      <hr />
+      <h3>Saved meals</h3>
+      <MealsList />
     </Fragment>
   );
 }
 
+export function MealsList() {
+  const [meals, setMeals] = useState<Array<any>>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    fetch('/api/meals')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!mounted) return;
+        setMeals(data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        setError(err.message || 'Failed to load');
+        setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) return <div>Loading meals...</div>;
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (!meals.length) return <div>No saved meals yet.</div>;
+
+  return (
+    <ul>
+      {meals.map((m: any) => (
+        <li key={m._id}>
+          <strong>A Meal</strong> {/* TODO: Replace this with a name or date for the meal once we implement that */}
+          <ul>
+            {m.items.map((i: any) => (
+              <li key={i.name}>
+                {i.name} — {i.calories} calories
+                {i.protein !== undefined && <>, {i.protein} g protein</>}
+              </li>
+            ))}
+          </ul>
+          {m.notes !== undefined && <p>Notes: {m.notes}</p>}
+        </li>
+      ))}
+    </ul>
+  );
+}
