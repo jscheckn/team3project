@@ -5,6 +5,7 @@ import { AddGoal, GoalsList } from './pages/addGoal';
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import LogIn from "./pages/logIn";
 import SignUp from "./pages/signUp";
+import Dashboard from "./pages";
 
 
 function App(){
@@ -13,7 +14,7 @@ function App(){
       <BrowserRouter>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/addMeal" element={<AddMeal />} />
           <Route path="/addGoal" element={<AddGoal />} />
           <Route path="/logIn" element={<LogIn />} />
@@ -24,15 +25,3 @@ function App(){
   );
 }
 export default App
-
-function Home() {
-  return (
-    <Fragment>
-      <h1>Home</h1>
-      <h2>Saved meals</h2>
-      <MealsList />
-      <h2>Saved goals</h2>
-      <GoalsList />
-    </Fragment>
-  );
-}

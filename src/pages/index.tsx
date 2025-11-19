@@ -1,7 +1,9 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import {Fragment} from "react/jsx-runtime";
+import {MealsList} from "./addMeal";
+import {GoalsList} from "./addGoal";
 
-function dashboard(){
+function Dashboard(){
 
     // {goals.forEach } print a progress bar for each goal 
 // in format 
@@ -13,4 +15,15 @@ function dashboard(){
 // meal tile
 // conents and calorie
 
+  return (
+    <Fragment>
+      <h1>Home</h1>
+      <h2>Saved meals</h2>
+      <MealsList />
+      <h2>Saved goals</h2>
+      <GoalsList />
+    </Fragment>
+  );
 }
+
+export default Dashboard;
