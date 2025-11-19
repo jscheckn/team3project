@@ -3,6 +3,7 @@ import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown';
 import saveToServer from '../data/saveToServer';
 import {enumValue, enumValues, GoalType, GoalScale} from "../data/types";
+import FetchingFragment from "../Components/FetchingFragment";
 
 export async function saveGoalToServer(goal: {
   type: GoalType;
@@ -102,45 +103,23 @@ export function CalForm() {
 }
 
 export function GoalsList() {
-  const [goals, setGoals] = useState<Array<any>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    fetch('/api/goals')
-      .then((r) => r.json())
-      .then((data) => {
-        if (!mounted) return;
-        setGoals(data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (!mounted) return;
-        setError(err.message || 'Failed to load');
-        setLoading(false);
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (loading) return <div>Loading goals...</div>;
-  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
-  if (!goals.length) return <div>No saved goals yet.</div>;
-
-  return (
-    <ul>
-      {goals.map((g: any) => (
-        <li key={g._id}>
-          <strong>{g.type}</strong>
-          {g.amount !== undefined && <> — {g.amount}</>}
-          {g.scale && <> / {g.scale}</>}
-          {g.description && <> — {g.description}</>}
-        </li>
-      ))}
-    </ul>
+  return FetchingFragment(
+    '/api/goals',
+    <div>Loading goals...</div>,
+    error => <div style={{ color: 'red' }}>Error: {error}</div>,
+    goals => {
+      if (!goals.length) return <div>No saved goals yet.</div>;
+      return <ul>
+        {goals.map((g: any) => (
+          <li key={g._id}>
+            <strong>{g.type}</strong>
+            {g.amount !== undefined && <> — {g.amount}</>}
+            {g.scale && <> / {g.scale}</>}
+            {g.description && <> — {g.description}</>}
+          </li>
+        ))}
+      </ul>;
+    }
   );
 }
 
