@@ -9,8 +9,20 @@ function ProgressList() {
     '/api/comparison',
     <div>Loading progress...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
-    progressList => {
-      return <div>Hello world!</div>;
+    progress => {
+      const comparisons = progress?.comparisons;
+      if (!comparisons?.length) return <div>No goals set to make progress on.</div>;
+      return <ul>
+        {comparisons.map((c: any) => (
+          <li key={c.goalId}>
+            <strong>{c.type}</strong>
+            {c.meetsGoal && <> (DONE)</>}
+            {c.goalAmount !== undefined && <> — {c.goalAmount}</>}
+            {c.difference > 0 && <> ({c.difference} left)</>}
+            {c.scale && <> / {c.scale}</>}
+          </li>
+        ))}
+      </ul>
     }
   );
 }
