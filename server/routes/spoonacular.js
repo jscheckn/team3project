@@ -60,18 +60,15 @@ router.post('/caption', upload.single('image'), async (req, res) => {
       knownLength: req.file.size
     });
 
+    const spoonUrl = `https://api.spoonacular.com/food/images/analyze?apiKey=${process.env.SPOONACULAR_KEY}`;
 
-    // Common base: https://api.spoonacular.com/food/images/analyze not sure if this is still correct
-    const spoonUrl = `https://api.spoonacular.com/food/images/analyze?apiKey=${encodeURIComponent(SPOON_KEY)}`;
-
-    // send to api
     const response = await axios.post(spoonUrl, form, {
       headers: {
         ...form.getHeaders()
       },
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
-      timeout: 30000
+      timeout: 3000
     });
 
     const spoonResult = response.data;
