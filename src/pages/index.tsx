@@ -18,8 +18,8 @@ function ProgressList() {
             <strong>{c.type}</strong>
             {c.meetsGoal && <> (DONE)</>}
             {c.goalAmount !== undefined && <> — {c.goalAmount}</>}
-            {c.difference > 0 && <> ({c.difference} left)</>}
             {c.scale && <> / {c.scale}</>}
+            {c.difference > 0 && <> ({c.difference} in excess)</>}
           </li>
         ))}
       </ul>
