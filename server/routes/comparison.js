@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 			let goalAmount = typeof g.amount === 'number' ? g.amount : undefined;
 			let total = undefined;
 
-			if (type.includes('calories')) {
+			if (type.includes('caloric')) {
 				total = totals.calories;
 			} else if (type.includes('protein')) {
 				total = totals.protein;

@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import goalsRouter from './routes/goals.js';
 import mealsRouter from './routes/meals.js';
+import comparisonRouter from './routes/comparison.js';
 import spoonacularRouter from './routes/spoonacular.js';
 
 const app = express();
@@ -21,6 +22,7 @@ mongoose.connect(mongoUri)
 
 app.use('/api/goals', goalsRouter);
 app.use('/api/meals', mealsRouter);
+app.use('/api/comparison', comparisonRouter);
 app.use('/api/spoonacular', spoonacularRouter);
 
 const port = process.env.PORT || 5000;
