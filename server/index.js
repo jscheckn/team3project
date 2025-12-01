@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import accountsRouter from './routes/accounts.js';
 import goalsRouter from './routes/goals.js';
 import mealsRouter from './routes/meals.js';
 import comparisonRouter from './routes/comparison.js';
@@ -20,6 +21,7 @@ mongoose.connect(mongoUri)
     process.exit(1);
   });
 
+app.use('/api/accounts', accountsRouter);
 app.use('/api/goals', goalsRouter);
 app.use('/api/meals', mealsRouter);
 app.use('/api/comparison', comparisonRouter);
