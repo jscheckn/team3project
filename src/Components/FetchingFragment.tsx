@@ -1,6 +1,6 @@
 import React from "react";
 
-function FetchingFragment(url: string, loadingElement: React.ReactElement,
+function FetchingFragment(url: string, init: RequestInit, loadingElement: React.ReactElement,
                           errorFunc: (e: string | null) => React.ReactElement,
                           contentFunc: (c: any) => React.ReactElement) {
 
@@ -11,7 +11,7 @@ function FetchingFragment(url: string, loadingElement: React.ReactElement,
   React.useEffect(() => {
     let mounted = true;
     setLoading(true);
-    fetch(url)
+    fetch(url, init)
       .then((r) => r.json())
       .then((data) => {
         if (!mounted) return;

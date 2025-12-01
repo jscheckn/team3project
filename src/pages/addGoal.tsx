@@ -108,6 +108,7 @@ export function CalForm() {
 export function GoalsList() {
   return FetchingFragment(
     '/api/goals',
+    undefined,
     <div>Loading goals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     goals => {
