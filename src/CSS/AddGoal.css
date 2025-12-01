@@ -5,3 +5,69 @@
   font-family: "Open Sans", sans-serif;     
 }
 
+#SubmitButton{
+   color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 4px 4px;
+  /* width: 90%;  */
+  text-align: center; 
+  margin: 2px, 2px, 2px, 2px;           
+  border: 1px solid #4a360a;  
+  border-radius: 0%;       
+  text-decoration: none;    
+  background-color: #FFFEE9   
+}
+
+#SubmitButton:hover{
+    background-color: #7aa15c;
+}
+
+#FormTitle{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+}
+#FormLabel{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+}
+#FormQuestionInput{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+}
+
+#FormInputBox{
+  padding: 5px;
+  background-color: #FFFEE9; 
+  border-radius: 5px;
+  border-width: 3px;
+  border-color: #7aa15c;
+  margin-top: 10px ;
+  display: block;
+  margin: auto;
+}
+
+#LINE1{
+  border: none; /* Remove default border */
+  height: 5px; /* Set desired thickness */
+  background-color:  #4a360a;
+  width: 90%;
+  border-radius: 250%;    
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+#textOnPage{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+}
+
+#SavedGoals{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+  text-align: center;
+}

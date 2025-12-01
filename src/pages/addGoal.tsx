@@ -34,8 +34,8 @@ export function AddGoal() {
   const PreExistingGoals = ["none"] //We will pull this from the user  
   return <div className="addGoal-container">
     <Fragment>
-      <h1>Hello</h1>
-      <h3>Lets Check Out your Goals</h3>
+      <h1 id="textOnPage">Hello</h1>
+      <h3 id="textOnPage">Lets Check Out your Goals</h3>
       <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
       <br />
       {selected === GoalType.Caloric && <CalForm />}
@@ -45,9 +45,10 @@ export function AddGoal() {
       {selected === GoalType.Custom && <CustomForm />}
       <br />
       <DropDown items={PreExistingGoals} title={title2} />
-      <hr />
-      <h3>Saved goals</h3>
+      <hr id="LINE1" />
+      <h3 id="textOnPage">Saved goals</h3>
       <GoalsList />
+      {/* id="SavedGoals" add for list of saved goals */}
     </Fragment>
   </div>
 }
@@ -84,15 +85,16 @@ export function CalForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Set Your Calorie Goal</h2>
-      <label>
+      <h2 id="FormTitle">Set Your Calorie Goal</h2>
+      <label id="FormLabel">
         What type of goal are you setting?{" "}
         <DropDown items={scales} title={title} onChange={handleScaleChange} value={scale}/>
       </label>
       <br />
-      <label>
+      <label id="FormQuestionInput">
         What amount of calories for {scale}:{" "}
         <input
+          id="FormInputBox"
           type="number"
           value={calories}
           onChange={handleCaloriesChange}
@@ -100,7 +102,7 @@ export function CalForm() {
         />
       </label>
       <br />
-      <button type="submit">Save Goal</button>
+      <button id="SubmitButton" type="submit">Save Goal</button>
     </form>
   );
 }
@@ -160,15 +162,16 @@ function ProteinForm() {
 
 
   return(<form onSubmit={handleSubmit}>
-      <h2>Set Your Protein Goal</h2>
-      <label>
+      <h2 id="FormTitle">Set Your Protein Goal</h2>
+      <label id="FormLabel">
         What type of goal are you setting?{" "}
         <DropDown items={scales} title={title} onChange={handleScaleChange} value={scale}/>
       </label>
       <br />
-      <label>
+      <label id="FormQuestionInput">
         What grams of protein for {scale}:{" "}
         <input
+          id="FormInputBox"
           type="number"
           value={protein}
           onChange={handleProteinChange}
@@ -176,7 +179,7 @@ function ProteinForm() {
         />
       </label>
       <br />
-      <button type="submit">Save Goal</button>
+      <button id="SubmitButton" type="submit">Save Goal</button>
     </form>);
 }
 
@@ -212,8 +215,8 @@ function FiberForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Set Your Fiber Goal</h2>
-      <label>
+      <h2 id="FormTitle">Set Your Fiber Goal</h2>
+      <label id="FormLabel">
         What type of goal are you setting?{" "}
         <DropDown
           items={scales}
@@ -223,9 +226,10 @@ function FiberForm() {
         />
       </label>
       <br />
-      <label>
+      <label id="FormQuestionInput">
         What grams of fiber for {scale}:{" "}
         <input
+          id="FormInputBox"
           type="number"
           value={fiber}
           onChange={handleFiberChange}
@@ -233,7 +237,7 @@ function FiberForm() {
         />
       </label>
       <br />
-      <button type="submit">Save Goal</button>
+      <button id="SubmitButton" type="submit">Save Goal</button>
     </form>
   );
 }
@@ -276,10 +280,10 @@ function VitaminForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Set Your Vitamin Goal</h2>
+      <h2 id="FormTitle">Set Your Vitamin Goal</h2>
 
       <label>
-        Time scale:{" "}
+        {/* Time scale:{" "} */}
         <DropDown
           items={scales}
           title="Time Scale"
@@ -290,7 +294,7 @@ function VitaminForm() {
       <br />
 
       <label>
-        Vitamin type:{" "}
+        {/* Vitamin type:{" "} */}
         <DropDown
           items={vitamins}
           title="Vitamin Type"
@@ -300,9 +304,10 @@ function VitaminForm() {
       </label>
       <br />
 
-      <label>
+      <label id="FormQuestionInput">
         Amount (grams) for {vitamin} per {scale}:{" "}
         <input
+          id="FormInputBox"
           type="number"
           value={vitaminAmount}
           onChange={handleAmountChange}
@@ -311,7 +316,7 @@ function VitaminForm() {
       </label>
       <br />
 
-      <button type="submit">Save Goal</button>
+      <button id="SubmitButton" type="submit">Save Goal</button>
     </form>
   );
 }
@@ -340,11 +345,12 @@ function CustomForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Set Your Custom Goal</h2>
+      <h2 id="FormTitle">Set Your Custom Goal</h2>
 
-      <label>
+      <label id="FormLabel">
         Description:{" "}
         <input
+          id="FormInputBox"
           type="text"
           value={description}
           onChange={handleChange}
@@ -353,7 +359,7 @@ function CustomForm() {
       </label>
       <br />
 
-      <button type="submit">Save Goal</button>
+      <button id="SubmitButton" type="submit">Save Goal</button>
     </form>
   );
 }

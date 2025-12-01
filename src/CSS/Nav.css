@@ -40,8 +40,7 @@
   font-family: "Open Sans", sans-serif;
   padding: 8px 0;
   width: 90%; 
-  text-align: left; 
-  margin: 0;           
+  text-align: left;          
   border: 0px solid #4a360a;  
   border-radius: 0%;       
   text-decoration: none;    
@@ -62,5 +61,4 @@
   width: 90%;
   border-radius: 250%;    
   margin: 0 auto;
-
 }
