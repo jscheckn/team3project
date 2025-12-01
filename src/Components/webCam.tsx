@@ -25,7 +25,7 @@ const CustomWebcam = () => {
       />
 
       <div className="btn-container">
-        <button onClick={capture}>Capture photo</button>
+        <button  id="MealButton" onClick={capture}>Capture photo</button>
       </div>
 
       {/* Show captured image */}

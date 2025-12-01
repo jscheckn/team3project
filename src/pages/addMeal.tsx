@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 're
 import CustomWebcam from '../Components/webCam';
 import FetchingFragment from '../Components/FetchingFragment';
 import saveToServer from '../data/saveToServer';
+import "../CSS/AddMeal.css"
 
 export async function saveMealToServer(meal: {
     items: {
@@ -74,12 +75,13 @@ export function AddMeal() {
 
 
   return (
+    <div className="addMeal-container">
     <Fragment>
-      <h1>Meals</h1>
+      <h1 id="textOnPage">Meals</h1>
 
       {/*Manual addition, can remove later if necessary */}
       <section>
-        <h2>Manually add a meal</h2>
+        <h2 id="textOnPage">Manually add a meal</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="meal-name">Meal name</label>
           <input id="meal-name" type="text" value={name} onChange={handleNameChange} />
@@ -91,19 +93,19 @@ export function AddMeal() {
           <input id="meal-notes" type="text" value={notes} onChange={handleNotesChange} />
 
           <div style={{ marginTop: 10 }}>
-            <button type="submit">Save meal</button>
+            <button id="MealButton" type="submit">Save meal</button>
           </div>
         </form>
       </section>
 
-      <hr />
+      <hr id="LINE1"/>
 
       {/* Photo uploading */}
       <section>
-        <h3>Add photo</h3>
+        <h3 id="textOnPage">Add photo</h3>
         <div>
-          <button onClick={handleTakePhoto}>Take Image</button>
-          <button onClick={handleUploadClick}>Upload Image</button>
+          <button  id="MealButton" onClick={handleTakePhoto}>Take Image</button>
+          <button  id="MealButton" onClick={handleUploadClick}>Upload Image</button>
         </div>
 
         {uploadMode === 'webcam' && (
@@ -114,7 +116,7 @@ export function AddMeal() {
 
         {uploadMode === 'upload' && (
           <div style={{ marginTop: 10 }}>
-            <label htmlFor="fileUpload">Upload an image</label>
+            <label id="textOnPage" htmlFor="fileUpload">Upload an image</label>
             <input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} />
             {filePreview && (
               <div style={{ marginTop: 10 }}>
@@ -124,20 +126,22 @@ export function AddMeal() {
           </div>
         )}
       </section>
-      <hr />
-      <h3>Saved meals</h3>
+      <hr id="LINE1" />
+      <h3 id="textOnPage">Saved meals</h3>
+      {/* id="SavedMeals" add for list of saved meals */}
       <MealsList />
     </Fragment>
+    </div>
   );
 }
 
 export function MealsList() {
   return FetchingFragment(
     '/api/meals',
-    <div>Loading meals...</div>,
+    <div id="textOnPage">Loading meals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     meals => {
-      if (!meals.length) return <div>No saved meals yet.</div>;
+      if (!meals.length) return <div id="textOnPage">No saved meals yet.</div>;
       return <ul>
         {meals.map((m: any) => (
           <li key={m._id}>
