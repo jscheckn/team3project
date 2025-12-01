@@ -1,0 +1,66 @@
+#navbar {
+    background-color: #FFFEE9; 
+    font-family: "Open Sans", sans-serif;
+      width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#myProg,
+.login-links {
+  list-style: none;
+  padding: 10;
+  margin: 10;
+}
+
+/* Remove underline from links */
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.login-links, .MyProg{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 8px 14px;
+  margin: 0;           
+  border: 0px solid #4a360a;  
+  border-radius: 0%;       
+  text-decoration: none;    
+  background-color: #FFFEE9    
+}
+
+.login-links:hover,
+.MyProg:hover {
+  background-color: #7aa15c;;  /* optional hover effect */
+}
+
+.navbar-links-Meal, .navbar-links-Goal{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 8px 0;
+  width: 90%; 
+  text-align: left; 
+  margin: 0;           
+  border: 0px solid #4a360a;  
+  border-radius: 0%;       
+  text-decoration: none;    
+  background-color: #FFFEE9    
+}
+.navbar-links {
+  list-style-type: none;
+}
+
+.navbar-links-Meal:hover, .navbar-links-Goal:hover{
+  background-color: #7aa15c;
+}
+
+#LINE{
+  border: none; /* Remove default border */
+  height: 5px; /* Set desired thickness */
+  background-color:  #4a360a;
+  width: 90%;
+  border-radius: 250%;    
+  margin: 0 auto;
+
+}

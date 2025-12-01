@@ -1,4 +1,6 @@
 import React from 'react';
+import "../CSS/DropDown.css"
+
 
 interface DropDownProps {
   items: string[];
@@ -12,7 +14,7 @@ function DropDown({ items, title, onChange, value }: DropDownProps) {
   return (
     <label>
       {title}:
-      <select name="choices" onChange={onChange ?? (() => {})} value={value}>
+      <select className="dropdown-select" name="choices" onChange={onChange ?? (() => {})} value={value}>
         {options}
       </select>
     </label>

@@ -1,0 +1,16 @@
+.dropdown-select{
+    color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 4px 0;
+  width: 100%; 
+  text-align: center; 
+  margin: 0;           
+  border: 1px solid #4a360a;  
+  border-radius: 0%;
+  display: block;       
+  text-decoration: none;    
+  background-color: #FFFEE9    
+}
+.dropdown-select:focus{
+ background-color: #7aa15c;
+}

@@ -4,6 +4,7 @@ import DropDown from '../Components/DropDown';
 import saveToServer from '../data/saveToServer';
 import {enumValue, enumValues, GoalType, GoalScale} from "../data/types";
 import FetchingFragment from "../Components/FetchingFragment";
+import "../CSS/AddGoal.css"
 
 export async function saveGoalToServer(goal: {
   type: GoalType;
@@ -31,22 +32,24 @@ export function AddGoal() {
 
   const title2 ="Edit Goals"
   const PreExistingGoals = ["none"] //We will pull this from the user  
-  return <Fragment>
-    <h1>Hello</h1>
-    <h3>Lets Check Out your Goals</h3>
-    <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
-    <br></br>
+  return <div className="addGoal-container">
+    <Fragment>
+      <h1>Hello</h1>
+      <h3>Lets Check Out your Goals</h3>
+      <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
+      <br />
       {selected === GoalType.Caloric && <CalForm />}
       {selected === GoalType.Protein && <ProteinForm />}
       {selected === GoalType.Fiber && <FiberForm />}
       {selected === GoalType.Vitamin && <VitaminForm />}
       {selected === GoalType.Custom && <CustomForm />}
-      <br></br>
-    <DropDown items={PreExistingGoals} title={title2} />
-  <hr />
-  <h3>Saved goals</h3>
-  <GoalsList />
+      <br />
+      <DropDown items={PreExistingGoals} title={title2} />
+      <hr />
+      <h3>Saved goals</h3>
+      <GoalsList />
     </Fragment>
+  </div>
 }
 
 export function CalForm() {
