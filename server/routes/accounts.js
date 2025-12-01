@@ -13,20 +13,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const {email, password} = req.body;
         const token = await accounts.login(email, password);
-        return res.json(token);
+        return res.status(201).json({token});
     } catch (e) {
         return res.status(401).json({error: 'Invalid credentials.'});
     }
 });
 
-router.get('/validate', async (req, res) => {
+router.post('/validate', async (req, res) => {
     try {
         const decoded = await accounts.validate(req.body.token);
-        return res.json(decoded);
+        return res.status(201).json(decoded);
     } catch (e) {
         return res.status(401).json({error: 'Invalid token.'});
     }

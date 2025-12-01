@@ -1,5 +1,6 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import {FieldValues, useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 
 // https://www.geeksforgeeks.org/reactjs/react-hook-form-create-basic-reactjs-registration-and-login-form/
 
@@ -9,9 +10,20 @@ function SignUp() {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const navigate = useNavigate();
 
-    const onSubmit = () => {
-    //   fill in
+    const onSubmit = async (data: FieldValues) => {
+        if (data.password !== data.confirmPassword)
+            throw new Error("Passwords do not match");
+        const response = await fetch('/api/accounts/register', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+        const {error} = await response.json();
+        if (error !== undefined)
+            throw new Error(error);
+        navigate('/login');
     };
 
     return (
