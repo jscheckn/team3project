@@ -1,7 +1,7 @@
 import React from "react";
 import {FieldValues, useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
-import "../Login.css";
+import "../CSS/Login.css";
 
 // https://www.geeksforgeeks.org/reactjs/react-hook-form-create-basic-reactjs-registration-and-login-form/ 
 
