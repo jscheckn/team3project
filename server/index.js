@@ -1,5 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config();
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -24,6 +32,7 @@ app.use('/api/goals', goalsRouter);
 app.use('/api/meals', mealsRouter);
 app.use('/api/comparison', comparisonRouter);
 app.use('/api/spoonacular', spoonacularRouter);
-
+console.log("CWD:", process.cwd());
+console.log("ENV KEY:", process.env.SPOONACULAR_KEY);
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server listening on http://localhost:${port}`));

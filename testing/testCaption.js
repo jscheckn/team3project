@@ -2,7 +2,7 @@ import fs from 'fs';
 import FormData from 'form-data';
 import axios from 'axios';
 
-const filePath = 'C:/Users/schec/OneDrive/Desktop/CS555/hamburger.jpg';
+const filePath = 'C:/Users/schec/OneDrive/Desktop/CS555/fry.jpg';
 const url = 'http://localhost:5000/api/spoonacular/caption';
 
 async function run() {

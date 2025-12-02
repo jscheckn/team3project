@@ -19,15 +19,41 @@ export function AddMeal() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   const [uploadMode, setUploadMode] = useState<'none' | 'webcam' | 'upload'>('none');
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [caption, setCaption] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
   const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => setCalories(e.target.value === '' ? '' : Number(e.target.value));
   const handleNotesChange = (e: ChangeEvent<HTMLInputElement>) => setNotes(e.target.value);
 
+  async function getCaptionFromImage(file: File) {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/spoonacular/caption", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+      const data = await res.json();
+
+      return {
+        caption: data.caption,
+        ingredients: data.ingredients || []
+      };
+    } catch (err) {
+      console.error("Error fetching caption:", err);
+      return { caption: null, ingredients: [] };
+    }
+  }
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // TODO: Make use of photo data here
@@ -58,14 +84,23 @@ export function AddMeal() {
     setUploadMode('upload');
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files && e.target.files[0];
     if (f) {
       setSelectedFile(f);
       const url = URL.createObjectURL(f);
       setFilePreview(url);
+
+      setIsAnalyzing(true);
+      const result = await getCaptionFromImage(f);
+      setCaption(result.caption);
+      setIngredients(result.ingredients);  
+      setName(result.caption);  
+      setIsAnalyzing(false);
     }
   };
+
+  
   useEffect(() => {
   return () => {
     if (filePreview) URL.revokeObjectURL(filePreview)
@@ -119,6 +154,33 @@ export function AddMeal() {
             {filePreview && (
               <div style={{ marginTop: 10 }}>
                 <img src={filePreview} alt="preview" style={{ maxWidth: 300 }} />
+                    {isAnalyzing ? (
+                      <p>Analyzing image...</p>
+                    ) : caption ? (
+                      <p><strong>Click the label that fits your picture the most:</strong></p>
+                    ) : null}
+                  {ingredients && ingredients.length > 0 && (
+                <div style={{ marginTop: 10 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                    {ingredients.map((label, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        style={{
+                          padding: "6px 10px",
+                          borderRadius: "6px",
+                          border: "1px solid #ccc",
+                          cursor: "pointer",
+                          background: "#f4f4f4"
+                        }}
+                        onClick={() => setName(label)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}                
               </div>
             )}
           </div>
