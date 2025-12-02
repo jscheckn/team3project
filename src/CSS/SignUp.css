@@ -1,0 +1,35 @@
+#SignUp{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+}
+
+#Inputs{
+  padding: 5px;
+  background-color: #FFFEE9; 
+  border-radius: 5px;
+  border-width: 5px;
+  border-color: #7aa15c;
+  margin: 10px auto;
+  display: block;
+  
+}
+
+#Submit{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 4px 4px;
+  /* width: 90%;  */
+  text-align: center; 
+  /* margin: 2px, 2px, 2px, 2px;            */
+  margin: 10px auto;
+  display: block;
+  border: 1px solid #4a360a;  
+  border-radius: 0%;       
+  text-decoration: none;    
+  background-color: #FFFEE9;  
+}
+
+#Submit:hover{
+    background-color: #7aa15c;
+}
