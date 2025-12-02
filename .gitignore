@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+
+server/vision-key.json
+vision-key.json
+*.json.secret
+*.key.json
