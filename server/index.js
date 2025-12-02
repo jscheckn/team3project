@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import accountsRouter from './routes/accounts.js';
 import goalsRouter from './routes/goals.js';
@@ -12,6 +13,7 @@ import spoonacularRouter from './routes/spoonacular.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/foodtracker';
 mongoose.connect(mongoUri)

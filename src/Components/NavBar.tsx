@@ -33,11 +33,6 @@ function NavBar() {
           <hr id="LINE"></hr>
         </nav>
       )
-    },
-    {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({token: document.cookie})
     }
   );
 };

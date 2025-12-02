@@ -20,10 +20,9 @@ function Login() {
             body: JSON.stringify(data),
             headers: {'Content-Type': 'application/json'}
         });
-        const {token, error} = await response.json();
-        if (token === undefined)
+        const {error} = await response.json();
+        if (error !== undefined)
             throw new Error(error);
-        document.cookie = token;
         navigate('/');
     };
 

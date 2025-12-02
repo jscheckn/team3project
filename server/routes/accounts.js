@@ -17,15 +17,15 @@ router.post('/login', async (req, res) => {
     try {
         const {email, password} = req.body;
         const token = await accounts.login(email, password);
-        return res.status(201).json({token});
+        return res.status(201).cookie('token', token).json({});
     } catch (e) {
         return res.status(401).json({error: 'Invalid credentials.'});
     }
 });
 
-router.post('/validate', async (req, res) => {
+router.get('/validate', async (req, res) => {
     try {
-        const decoded = await accounts.validate(req.body.token);
+        const decoded = await accounts.validate(req.cookies.token);
         return res.status(201).json(decoded);
     } catch (e) {
         return res.status(401).json({error: 'Invalid token.'});
