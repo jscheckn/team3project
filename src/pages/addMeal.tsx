@@ -134,7 +134,6 @@ export function AddMeal() {
 export function MealsList() {
   return FetchingFragment(
     '/api/meals',
-    undefined,
     <div>Loading meals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     meals => {

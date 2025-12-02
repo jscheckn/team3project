@@ -7,7 +7,6 @@ import {GoalsList} from "./addGoal";
 function ProgressList() {
   return FetchingFragment(
     '/api/comparison',
-    undefined,
     <div>Loading progress...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     progress => {

@@ -1,8 +1,8 @@
 import React from "react";
 
-function FetchingFragment(url: string, init: RequestInit, loadingElement: React.ReactElement,
+function FetchingFragment(url: string, loadingElement: React.ReactElement,
                           errorFunc: (e: string | null) => React.ReactElement,
-                          contentFunc: (c: any) => React.ReactElement) {
+                          contentFunc: (c: any) => React.ReactElement, init?: RequestInit) {
 
   const [data, setData] = React.useState<Array<any>>([]);
   const [loading, setLoading] = React.useState(false);
