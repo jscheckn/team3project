@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import LogIn from "./pages/logIn";
 import SignUp from "./pages/signUp";
 import Dashboard from "./pages";
+import SeeRecipes from "./pages/recipes";
 
 
 function App(){
@@ -19,6 +20,7 @@ function App(){
           <Route path="/addGoal" element={<AddGoal />} />
           <Route path="/logIn" element={<LogIn />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/recipes" element={<SeeRecipes />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

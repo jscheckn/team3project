@@ -35,7 +35,7 @@
   background-color: #7aa15c;;  /* optional hover effect */
 }
 
-.navbar-links-Meal, .navbar-links-Goal{
+.navbar-links-Meal, .navbar-links-Goal, .navbar-links-Recipe{
   color: #4a360a;
   font-family: "Open Sans", sans-serif;
   padding: 8px 0;
@@ -50,7 +50,7 @@
   list-style-type: none;
 }
 
-.navbar-links-Meal:hover, .navbar-links-Goal:hover{
+.navbar-links-Meal:hover, .navbar-links-Goal:hover, .navbar-links-Recipe:hover{
   background-color: #7aa15c;
 }
 
