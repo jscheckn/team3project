@@ -1,6 +1,6 @@
 // NOTES: Must install ollama from https://ollama.com/download
 // Once downloaded, add to PATH and pull relevant ollama model --> ollama pull llama3.2:1b
-// This file has a decent will take a few seconds to run
+// Heads up, this function will take a few seconds to run
 import ollama from 'ollama';
 
 const MODEL_NAME = 'llama3.2:1b';
