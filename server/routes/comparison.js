@@ -1,15 +1,21 @@
 import express from 'express';
 import Goal from '../models/Goal.js';
-import { getAllMeals, getMealsByUserId } from '../data/mealData.js';
+import { getMealsByUserId } from '../data/mealData.js';
+import * as accounts from "../data/accounts.js";
 
 const router = express.Router();
 //get comparison of meals vs goals
 router.get('/', async (req, res) => {
   try {
-		const { userId } = req.query;
+    let account;
+    try {
+      account = await accounts.validate(req.cookies.token);
+    } catch (e) {
+      return res.status(401).json({error: e.message});
+    }
 
-		const meals = userId ? await getMealsByUserId(userId) : await getAllMeals();
-		const goals = await Goal.find().exec();
+		const meals = await getMealsByUserId(account.email);
+		const goals = await Goal.find({userId: account.email}).exec();
 
 		const totals = meals.reduce(
 			(acc, meal) => {
