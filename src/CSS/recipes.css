@@ -1,0 +1,25 @@
+#textOnPage{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 10px ;
+  text-align: center;
+  list-style-type: none;
+}
+
+#RecipeButton{
+   color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  padding: 4px 4px;
+  /* width: 90%;  */
+  text-align: center; 
+  margin-left: 10px;           
+  border: 1px solid #4a360a;  
+  border-radius: 0%;       
+  text-decoration: none;    
+  background-color: #FFFEE9;   
+  /* display: block; */
+}
+
+#RecipeButton:hover{
+    background-color: #7aa15c;
+}

@@ -113,8 +113,8 @@ export function GoalsList() {
     <div>Loading goals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     goals => {
-      if (!goals.length) return <div>No saved goals yet.</div>;
-      return <ul>
+      if (!goals.length) return <div > <h3 id="textOnPage">No saved goals yet.</h3></div>;
+      return <ul id="textOnPage">
         {goals.map((g: any) => (
           <li key={g._id}>
             <strong>{g.type}</strong>

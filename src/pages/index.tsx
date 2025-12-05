@@ -8,14 +8,14 @@ import "../CSS/home.css"
 function ProgressList() {
   return FetchingFragment(
     '/api/comparison',
-    <div >Loading progress...</div>,
+    <div> <h3 id="textOnPage">Loading progress...</h3></div>,
     error => <div className="GoalsListsError" style={{ color: 'red' }}>Error: {error}</div>,
     progress => {
       const comparisons = progress?.comparisons;
-      if (!comparisons?.length) return <div>No goals set to make progress on.</div>;
+      if (!comparisons?.length) return <div><h3 id="textOnPage">No goals set to make progress on.</h3></div>;
       return <ul>
         {comparisons.map((c: any) => (
-          <li className="GoalsLists" key={c.goalId}>
+          <li id="textOnPage" className="GoalsLists" key={c.goalId}>
             <strong>{c.type}</strong>
             {c.meetsGoal && <> (DONE)</>}
             {c.goalAmount !== undefined && <> — {c.goalAmount}</>}

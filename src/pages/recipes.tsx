@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {Fragment} from "react/jsx-runtime";
 import FetchingFragment from "../Components/FetchingFragment";
+import "../CSS/recipes.css"
+
 
 function SeeRecipes() {
 
     return (
         <Fragment> 
-        <h3>Select Meal</h3>
-            <MealsListWithButton />
+        <h3 id="textOnPage" >Select Meal</h3>
+            <MealsListWithButtonDisplay />
         </Fragment>
     );
 }
@@ -15,41 +17,56 @@ function SeeRecipes() {
 export default SeeRecipes;
 
 
-export function MealsListWithButton() {
+export function MealsListWithButtonDisplay() {
+    
+    const [alternateRecipes, setAlternateRecipes] = useState<{[key: string]: string[]} | null>(null);
+
   return FetchingFragment(
-    '/api/meals',
-    <div id="textOnPage">Loading meals...</div>,
-    error => <div style={{ color: 'red' }}>Error: {error}</div>,
-    meals => {
-      if (!meals.length) return <div id="textOnPage">No saved meals yet.</div>;
-      return <ul>
+  '/api/meals',
+  <div id="textOnPage">Loading meals...</div>,
+  error => <div style={{ color: 'red' }}>Error: {error}</div>,
+  meals => {
+    if (!meals.length) {
+      return (
+        <div id="textOnPage">
+          <h3>No saved meals yet.</h3>
+        </div>
+      );
+    }
+
+    return (
+      <div id="textOnPage">
         {meals.map((m: any) => (
           <li key={m._id}>
-            <strong>A Meal</strong> {/* TODO: Replace this with a name or date for the meal once we implement that */}
-            <ul>
+            <ul id="textOnPage">
               {m.items.map((i: any) => (
                 <li key={i.name}>
-                  {i.name} — {i.calories} calories
-                  {i.protein !== undefined && <>, {i.protein} g protein</>}
+                  {i.name}
+                  <button id="RecipeButton" onClick={() => handleClick(m.items[0].name)}>
+                    See Alternate Recipes
+                  </button>
+
+                  {alternateRecipes && alternateRecipes[m.items[0].name] && (
+                      <ul>
+                        {alternateRecipes[m.items[0].name].map((recipe: string, idx: number) => (
+                          <li key={idx}>{recipe}</li>
+                        ))}
+                      </ul>
+                    )}
+
                 </li>
               ))}
             </ul>
-            {m.notes !== undefined && <p>Notes: {m.notes}</p>}
-            {/* On CLick call the alternate recipe  */}
-            <button onClick={handleClick}>See Alternate Recipes</button>
           </li>
         ))}
-      </ul>;
-    }
-  );
+      </div>
+    );
+  }
+);
 }
 
-function handleClick() {
-  alert("REPALCE WITH RECIPE CALL");
-  return (
-  <Fragment>
-    <h3>Alternate Ingredients FROM CALL</h3>
-  </Fragment>
-  );
-
+async function handleClick(name: any) {
+  const res = await fetch(`/api/similar/${name}`);
+  const data = await res.json();
+  return data.meals
 }

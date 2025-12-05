@@ -203,20 +203,20 @@ export function MealsList() {
     <div id="textOnPage">Loading meals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     meals => {
-      if (!meals.length) return <div id="textOnPage">No saved meals yet.</div>;
-      return <ul>
+      if (!meals.length) return <div><h3 id="textOnPage">No saved meals yet.</h3></div>;
+      return <ul id="textOnPage">
         {meals.map((m: any) => (
           <li key={m._id}>
-            <strong>A Meal</strong> {/* TODO: Replace this with a name or date for the meal once we implement that */}
-            <ul>
+            {/* <strong>A Meal</strong> TODO: Replace this with a name or date for the meal once we implement that */}
+            <ul id="textOnPage">
               {m.items.map((i: any) => (
                 <li key={i.name}>
                   {i.name} — {i.calories} calories
                   {i.protein !== undefined && <>, {i.protein} g protein</>}
                 </li>
               ))}
-            </ul>
-            {m.notes !== undefined && <p>Notes: {m.notes}</p>}
+            </ul >
+            {m.notes !== undefined && <p id="textOnPage">Notes: {m.notes}</p>}
           </li>
         ))}
       </ul>;
