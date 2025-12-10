@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 're
 import CustomWebcam from '../Components/webCam';
 import FetchingFragment from '../Components/FetchingFragment';
 import saveToServer from '../data/saveToServer';
+import "../CSS/AddMeal.css"
 
 export async function saveMealToServer(meal: {
     items: {
@@ -19,15 +20,41 @@ export function AddMeal() {
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   const [uploadMode, setUploadMode] = useState<'none' | 'webcam' | 'upload'>('none');
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [caption, setCaption] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
   const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => setCalories(e.target.value === '' ? '' : Number(e.target.value));
   const handleNotesChange = (e: ChangeEvent<HTMLInputElement>) => setNotes(e.target.value);
 
+  async function getCaptionFromImage(file: File) {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/spoonacular/caption", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+      const data = await res.json();
+
+      return {
+        caption: data.caption,
+        ingredients: data.ingredients || []
+      };
+    } catch (err) {
+      console.error("Error fetching caption:", err);
+      return { caption: null, ingredients: [] };
+    }
+  }
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // TODO: Make use of photo data here
@@ -58,14 +85,23 @@ export function AddMeal() {
     setUploadMode('upload');
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files && e.target.files[0];
     if (f) {
       setSelectedFile(f);
       const url = URL.createObjectURL(f);
       setFilePreview(url);
+
+      setIsAnalyzing(true);
+      const result = await getCaptionFromImage(f);
+      setCaption(result.caption);
+      setIngredients(result.ingredients);  
+      setName(result.caption);  
+      setIsAnalyzing(false);
     }
   };
+
+  
   useEffect(() => {
   return () => {
     if (filePreview) URL.revokeObjectURL(filePreview)
@@ -74,12 +110,13 @@ export function AddMeal() {
 
 
   return (
+    <div className="addMeal-container">
     <Fragment>
-      <h1>Meals</h1>
+      <h1 id="textOnPage">Meals</h1>
 
       {/*Manual addition, can remove later if necessary */}
       <section>
-        <h2>Manually add a meal</h2>
+        <h2 id="textOnPage">Manually add a meal</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="meal-name">Meal name</label>
           <input id="meal-name" type="text" value={name} onChange={handleNameChange} />
@@ -91,19 +128,19 @@ export function AddMeal() {
           <input id="meal-notes" type="text" value={notes} onChange={handleNotesChange} />
 
           <div style={{ marginTop: 10 }}>
-            <button type="submit">Save meal</button>
+            <button id="MealButton" type="submit">Save meal</button>
           </div>
         </form>
       </section>
 
-      <hr />
+      <hr id="LINE1"/>
 
       {/* Photo uploading */}
       <section>
-        <h3>Add photo</h3>
+        <h3 id="textOnPage">Add photo</h3>
         <div>
-          <button onClick={handleTakePhoto}>Take Image</button>
-          <button onClick={handleUploadClick}>Upload Image</button>
+          <button  id="MealButton" onClick={handleTakePhoto}>Take Image</button>
+          <button  id="MealButton" onClick={handleUploadClick}>Upload Image</button>
         </div>
 
         {uploadMode === 'webcam' && (
@@ -114,43 +151,72 @@ export function AddMeal() {
 
         {uploadMode === 'upload' && (
           <div style={{ marginTop: 10 }}>
-            <label htmlFor="fileUpload">Upload an image</label>
+            <label id="textOnPage" htmlFor="fileUpload">Upload an image</label>
             <input id="fileUpload" type="file" accept="image/*" onChange={handleFileChange} />
             {filePreview && (
               <div style={{ marginTop: 10 }}>
                 <img src={filePreview} alt="preview" style={{ maxWidth: 300 }} />
+                    {isAnalyzing ? (
+                      <p>Analyzing image...</p>
+                    ) : caption ? (
+                      <p><strong>Click the label that fits your picture the most:</strong></p>
+                    ) : null}
+                  {ingredients && ingredients.length > 0 && (
+                <div style={{ marginTop: 10 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                    {ingredients.map((label, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        style={{
+                          padding: "6px 10px",
+                          borderRadius: "6px",
+                          border: "1px solid #ccc",
+                          cursor: "pointer",
+                          background: "#f4f4f4"
+                        }}
+                        onClick={() => setName(label)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}                
               </div>
             )}
           </div>
         )}
       </section>
-      <hr />
-      <h3>Saved meals</h3>
+      <hr id="LINE1" />
+      <h3 id="textOnPage">Saved meals</h3>
+      {/* id="SavedMeals" add for list of saved meals */}
       <MealsList />
     </Fragment>
+    </div>
   );
 }
 
 export function MealsList() {
   return FetchingFragment(
     '/api/meals',
-    <div>Loading meals...</div>,
+    <div id="textOnPage">Loading meals...</div>,
     error => <div style={{ color: 'red' }}>Error: {error}</div>,
     meals => {
-      if (!meals.length) return <div>No saved meals yet.</div>;
-      return <ul>
+      if (!meals.length) return <div><h3 id="textOnPage">No saved meals yet.</h3></div>;
+      return <ul id="textOnPage">
         {meals.map((m: any) => (
           <li key={m._id}>
-            <strong>A Meal</strong> {/* TODO: Replace this with a name or date for the meal once we implement that */}
-            <ul>
+            {/* <strong>A Meal</strong> TODO: Replace this with a name or date for the meal once we implement that */}
+            <ul id="textOnPage">
               {m.items.map((i: any) => (
                 <li key={i.name}>
                   {i.name} — {i.calories} calories
                   {i.protein !== undefined && <>, {i.protein} g protein</>}
                 </li>
               ))}
-            </ul>
-            {m.notes !== undefined && <p>Notes: {m.notes}</p>}
+            </ul >
+            {m.notes !== undefined && <p id="textOnPage">Notes: {m.notes}</p>}
           </li>
         ))}
       </ul>;

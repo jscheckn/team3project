@@ -7,6 +7,7 @@ import LogIn from "./pages/logIn";
 import LogOut from "./pages/logOut";
 import SignUp from "./pages/signUp";
 import Dashboard from "./pages";
+import SeeRecipes from "./pages/recipes";
 
 
 function App(){
@@ -21,6 +22,7 @@ function App(){
           <Route path="/logIn" element={<LogIn />} />
           <Route path="/logOut" element={<LogOut />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/recipes" element={<SeeRecipes />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

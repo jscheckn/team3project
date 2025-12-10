@@ -1,16 +1,24 @@
 .dropdown-select{
-    color: #4a360a;
+  color: #4a360a;
   font-family: "Open Sans", sans-serif;
   padding: 4px 0;
-  width: 100%; 
+  width: 30%; 
   text-align: center; 
-  margin: 0;           
+  margin: 0 auto;          
   border: 1px solid #4a360a;  
   border-radius: 0%;
   display: block;       
   text-decoration: none;    
   background-color: #FFFEE9    
 }
-.dropdown-select:focus{
+.dropdown-select:hover{
  background-color: #7aa15c;
+}
+
+.dropdown-title{
+  display: block; 
+  margin-bottom: 10px;
+  margin-top: 10px;
+  color: #4a360a;
+  font-family: "Open Sans" , sans-serif
 }

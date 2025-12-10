@@ -1,0 +1,17 @@
+#textOnPage {
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  margin: 10px auto; 
+  display: block; 
+  text-align: center;
+}
+
+.GoalsLists{
+  color: #4a360a;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+}
+
+.GoalsListsError{
+  text-align: center;
+}

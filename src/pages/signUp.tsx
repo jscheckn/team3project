@@ -1,6 +1,7 @@
 import React from "react";
 import {FieldValues, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
+import "../CSS/SignUp.css"
 
 // https://www.geeksforgeeks.org/reactjs/react-hook-form-create-basic-reactjs-registration-and-login-form/
 
@@ -28,10 +29,11 @@ function SignUp() {
 
     return (
         <>
-            <h2>Login</h2>
+            <h2 id="SignUp">Sign Up</h2>
 
-            <form className="sign up" onSubmit={handleSubmit(onSubmit)}>
+            <form  className="sign up" onSubmit={handleSubmit(onSubmit)}>
                 <input
+                    id="Inputs"
                     type="email"
                     {...register("email", { required: true })}
                     placeholder="Email"
@@ -39,6 +41,7 @@ function SignUp() {
                 {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
 
                 <input
+                    id="Inputs"
                     type="name"
                     {...register("name", { required: true })}
                     placeholder="Name"
@@ -46,6 +49,7 @@ function SignUp() {
                 {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
 
                 <input
+                    id="Inputs"
                     type="age"
                     {...register("age", { required: true })}
                     placeholder="Age"
@@ -53,6 +57,7 @@ function SignUp() {
                 {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
 
                 <input
+                    id="Inputs"
                     type="password"
                     {...register("password", { required: true })}
                     placeholder="Password"
@@ -61,13 +66,14 @@ function SignUp() {
 
 
                 <input
+                    id="Inputs"
                     type="password"
                     {...register("confirmPassword", { required: true })}
                     placeholder="Confirm Password"
                 />
                 {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
-                <input type="submit"  />
+                <input id="Submit" type="submit"  />
             </form>
         </>
     );

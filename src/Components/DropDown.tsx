@@ -12,8 +12,8 @@ interface DropDownProps {
 function DropDown({ items, title, onChange, value }: DropDownProps) {
   const options = items.map(item => <option  key={item} value={item} >{item || "-- select an option --"}</option>);
   return (
-    <label>
-      {title}:
+    <label className="dropdown-label">
+      <span className="dropdown-title">{title}:</span>
       <select className="dropdown-select" name="choices" onChange={onChange ?? (() => {})} value={value}>
         {options}
       </select>

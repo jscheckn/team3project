@@ -25,6 +25,7 @@ function NavBar() {
           <ul className="navbar-links">
             <li><button className="navbar-links-Meal"><Link to="/addMeal">Add Meal</Link></button></li>
             <li><button className="navbar-links-Goal"><Link to="/addGoal">Add Goal</Link></button></li>
+            <li><button className="navbar-links-Recipe"><Link to="/recipes">Recipes</Link></button></li>
           </ul>
         </>;
       return (
