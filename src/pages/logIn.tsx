@@ -2,11 +2,13 @@ import React from "react";
 import {FieldValues, useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
 import "../CSS/Login.css";
+import {useAuth} from "../Components/AuthProvider";
 
 // https://www.geeksforgeeks.org/reactjs/react-hook-form-create-basic-reactjs-registration-and-login-form/ 
 
 
 function Login() {
+    const {setLoggedIn} = useAuth();
     const {
         register,
         handleSubmit,
@@ -23,6 +25,7 @@ function Login() {
         const {error} = await response.json();
         if (error !== undefined)
             throw new Error(error);
+        setLoggedIn(true);
         navigate('/');
     };
 

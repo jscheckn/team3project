@@ -1,5 +1,5 @@
+import {AuthProvider} from "./Components/AuthProvider";
 import NavBar from "./Components/NavBar";
-import { Fragment } from "react/jsx-runtime";
 import { AddMeal, MealsList } from './pages/addMeal';
 import { AddGoal, GoalsList } from './pages/addGoal';
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
@@ -12,7 +12,7 @@ import SeeRecipes from "./pages/recipes";
 
 function App(){
    return (
-    <Fragment>
+    <AuthProvider>
       <BrowserRouter>
         <NavBar />
         <Routes>
@@ -25,7 +25,7 @@ function App(){
           <Route path="/recipes" element={<SeeRecipes />} />
         </Routes>
       </BrowserRouter>
-    </Fragment>
+    </AuthProvider>
   );
 }
 export default App
