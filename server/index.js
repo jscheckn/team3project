@@ -15,6 +15,7 @@ import cors from 'cors';
 import accountsRouter from './routes/accounts.js';
 import goalsRouter from './routes/goals.js';
 import mealsRouter from './routes/meals.js';
+import recipesRouter from './routes/recipes.js';
 import comparisonRouter from './routes/comparison.js';
 import spoonacularRouter from './routes/spoonacular.js';
 
@@ -34,6 +35,7 @@ mongoose.connect(mongoUri)
 app.use('/api/accounts', accountsRouter);
 app.use('/api/goals', goalsRouter);
 app.use('/api/meals', mealsRouter);
+app.use('/api/recipes', recipesRouter);
 app.use('/api/comparison', comparisonRouter);
 app.use('/api/spoonacular', spoonacularRouter);
 console.log("CWD:", process.cwd());

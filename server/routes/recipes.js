@@ -1,5 +1,5 @@
 import express from "express";
-import { getSimilarMeals } from "../../server/llm";
+import { getSimilarMeals } from "../llm.js";
 
 const router = express.Router();
 
