@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import {Fragment} from "react/jsx-runtime";
+import requireLogin from "../data/requireLogin";
 import FetchingFragment from "../Components/FetchingFragment";
 import "../CSS/recipes.css"
 
 
 function SeeRecipes() {
+
+    requireLogin();
 
     return (
         <Fragment> 

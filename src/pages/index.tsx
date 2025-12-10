@@ -1,6 +1,7 @@
 import React from "react";
 import {Fragment} from "react/jsx-runtime";
 import FetchingFragment from "../Components/FetchingFragment";
+import requireLogin from "../data/requireLogin";
 import {MealsList} from "./addMeal";
 import {GoalsList} from "./addGoal";
 import "../CSS/home.css"
@@ -39,6 +40,8 @@ function Dashboard(){
 // list 
 // meal tile
 // conents and calorie
+
+  requireLogin();
 
   return (
     <Fragment>

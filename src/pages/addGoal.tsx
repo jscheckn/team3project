@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Fragment } from "react/jsx-runtime";
 import DropDown from '../Components/DropDown';
+import requireLogin from "../data/requireLogin";
 import saveToServer from '../data/saveToServer';
 import {enumValue, enumValues, GoalType, GoalScale} from "../data/types";
 import FetchingFragment from "../Components/FetchingFragment";
@@ -20,6 +21,9 @@ const title = "Time Scale";
 const scales = enumValues(GoalScale);
 
 export function AddGoal() {
+
+  requireLogin();
+
   const title = "Add Goal"
   const typesOfGoals = enumValues(GoalType);
   const [selected, setSelected] = useState(typesOfGoals[0]);

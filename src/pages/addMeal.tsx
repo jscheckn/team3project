@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
 import FetchingFragment from '../Components/FetchingFragment';
+import requireLogin from "../data/requireLogin";
 import saveToServer from '../data/saveToServer';
 import "../CSS/AddMeal.css"
 
@@ -17,6 +18,9 @@ export async function saveMealToServer(meal: {
 }
 
 export function AddMeal() {
+
+  requireLogin();
+
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
