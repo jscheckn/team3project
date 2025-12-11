@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
     if (!items || !items.length) {
       return res.status(400).json({ error: 'at least one food item is required' });
     }
-
+    
     const meal = await addMeal({ /*userId,*/ items, notes });
     res.status(201).json(meal);
   } catch (err) {
