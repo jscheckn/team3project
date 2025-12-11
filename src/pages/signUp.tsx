@@ -73,7 +73,7 @@ function SignUp() {
                 />
                 {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
-                <input id="Submit" type="submit"  />
+                <input id="Submit" type="submit" value="Sign Up"/>
             </form>
         </>
     );

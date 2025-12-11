@@ -52,10 +52,10 @@ function Login() {
                 />
                 {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
                 <br></br>
-                <input type="submit" className="button-54"  />
+                <input type="submit" className="button-54" value="Login"/>
             </form>
-            <h3 id="NotSigned">Not Signed up?</h3>
-            <h4 id="SignUp"><Link to="/signUp" >Create On Here</Link></h4>
+            <h3 id="NotSigned">Don't have an account?</h3>
+            <h4 id="SignUp"><Link to="/signUp" >Sign up here.</Link></h4>
         </article>
             
         </>

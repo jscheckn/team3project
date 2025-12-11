@@ -38,8 +38,7 @@ export function AddGoal() {
   const PreExistingGoals = ["none"] //We will pull this from the user  
   return <div className="addGoal-container">
     <Fragment>
-      <h1 id="textOnPage">Hello</h1>
-      <h3 id="textOnPage">Lets Check Out your Goals</h3>
+      <h1 id="textOnPage">Goals</h1>
       <DropDown items={typesOfGoals} title={title} onChange={handleSelect} />
       <br />
       {selected === GoalType.Caloric && <CalForm />}
