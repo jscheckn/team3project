@@ -45,7 +45,6 @@ export function AddGoal() {
       {selected === GoalType.Caloric && <CalForm />}
       {selected === GoalType.Protein && <ProteinForm />}
       {selected === GoalType.Fiber && <FiberForm />}
-      {selected === GoalType.Vitamin && <VitaminForm />}
       {selected === GoalType.Custom && <CustomForm />}
       <br />
       <DropDown items={PreExistingGoals} title={title2} />
@@ -245,86 +244,6 @@ function FiberForm() {
     </form>
   );
 }
-
-function VitaminForm() {
-  const vitamins = ["A", "C", "D", "E", "K", "B"];
-  const [scale, setScale] = useState(scales[0]);
-  const [vitamin, setVitamin] = useState(vitamins[0]);
-  const [vitaminAmount, setVitaminAmount] = useState(0);
-
-  const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScale(enumValue(GoalScale, e.target.value));
-  };
-
-  const handleVitaminChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setVitamin(e.target.value);
-  };
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVitaminAmount(Number(e.target.value));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const payload = {
-        type: GoalType.Vitamin,
-        scale,
-        amount: vitamin === '' ? undefined : Number(vitamin)
-      };
-      const saved = await saveGoalToServer(payload);
-      // success
-      alert(`Saved: ${saved.type} goal`);
-      setVitamin('');
-      setScale(scales[0]);
-    } catch (err: any) {
-      alert('Save failed: ' + (err.message || err));
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2 id="FormTitle">Set Your Vitamin Goal</h2>
-
-      <label>
-        {/* Time scale:{" "} */}
-        <DropDown
-          items={scales}
-          title="Time Scale"
-          value={scale}
-          onChange={handleScaleChange}
-        />
-      </label>
-      <br />
-
-      <label>
-        {/* Vitamin type:{" "} */}
-        <DropDown
-          items={vitamins}
-          title="Vitamin Type"
-          value={vitamin}
-          onChange={handleVitaminChange}
-        />
-      </label>
-      <br />
-
-      <label id="FormQuestionInput">
-        Amount (grams) for {vitamin} per {scale}:{" "}
-        <input
-          id="FormInputBox"
-          type="number"
-          value={vitaminAmount}
-          onChange={handleAmountChange}
-          required
-        />
-      </label>
-      <br />
-
-      <button id="SubmitButton" type="submit">Save Goal</button>
-    </form>
-  );
-}
-
 
 function CustomForm() {
   const [description, setDescription] = useState("");

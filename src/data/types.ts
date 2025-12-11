@@ -2,7 +2,6 @@ export enum GoalType {
   Caloric = 'Caloric',
   Protein = 'Protein',
   Fiber = 'Fiber',
-  Vitamin = 'Vitamin',
   Custom = 'Custom'
 }
 
