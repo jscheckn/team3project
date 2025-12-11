@@ -8,7 +8,7 @@ const mealItemSchema = new mongoose.Schema({
 });
 
 const mealSchema = new mongoose.Schema({
-  // userId: { type: String, required: true, index: true },
+  userId: { type: String, required: true, index: true },
   items: [mealItemSchema],
   //add this later:  caloriesTotal: { type: Number },
   notes: String

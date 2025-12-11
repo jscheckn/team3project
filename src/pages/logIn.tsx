@@ -1,7 +1,7 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import "../Login.css";
+import {FieldValues, useForm} from "react-hook-form";
+import {Link, useNavigate} from "react-router-dom";
+import "../CSS/Login.css";
 
 // https://www.geeksforgeeks.org/reactjs/react-hook-form-create-basic-reactjs-registration-and-login-form/ 
 
@@ -12,9 +12,18 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const navigate = useNavigate();
 
-    const onSubmit = () => {
-    //   fill in
+    const onSubmit = async (data: FieldValues) => {
+        const response = await fetch('/api/accounts/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+        const {error} = await response.json();
+        if (error !== undefined)
+            throw new Error(error);
+        navigate('/');
     };
 
     return (

@@ -1,15 +1,21 @@
 import express from 'express';
 import Goal from '../models/Goal.js';
-import { getAllMeals, getMealsByUserId } from '../data/mealData.js';
+import { getMealsByUserId } from '../data/mealData.js';
+import * as accounts from "../data/accounts.js";
 
 const router = express.Router();
 //get comparison of meals vs goals
 router.get('/', async (req, res) => {
+  try {
+    let account;
     try {
-		const { userId } = req.query;
+      account = await accounts.validate(req.cookies.token);
+    } catch (e) {
+      return res.status(401).json({error: e.message});
+    }
 
-		const meals = userId ? await getMealsByUserId(userId) : await getAllMeals();
-		const goals = await Goal.find().exec();
+		const meals = await getMealsByUserId(account.email);
+		const goals = await Goal.find({userId: account.email}).exec();
 
 		const totals = meals.reduce(
 			(acc, meal) => {
@@ -37,18 +43,18 @@ router.get('/', async (req, res) => {
 			} else if (type.includes('protein')) {
 				total = totals.protein;
 			}
-            //helper function to check if goal was met and difference
-            const compareWithGoal = (total, goal) => {
-                if (typeof total !== 'number' || typeof goal !== 'number') {
-                    return { meetsGoal: undefined, difference: undefined };
-                }
-                return {
-                    meetsGoal: total <= goal,
-                    difference: total - goal
-                };
-            };
+      //helper function to check if goal was met and difference
+      const compareWithGoal = (total, goal) => {
+          if (typeof total !== 'number' || typeof goal !== 'number') {
+              return { meetsGoal: undefined, difference: undefined };
+          }
+          return {
+              meetsGoal: total <= goal,
+              difference: total - goal
+          };
+      };
 
-            const comparison = compareWithGoal(total, goalAmount);
+      const comparison = compareWithGoal(total, goalAmount);
 
 			return {
 				goalId: g._id,
@@ -62,7 +68,7 @@ router.get('/', async (req, res) => {
 			};
 		});
 		//res.json({ meals, goals, totals, comparisons }); can be changed for more info to display
-        res.json({ comparisons });
+    res.json({ comparisons });
 	} catch (err) {
 		console.error('Failed to generate comparison:', err);
 		res.status(500).json({ error: 'Failed to generate comparison' });

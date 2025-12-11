@@ -13,7 +13,8 @@ export async function getSimilarMeals(meal) {
   const prompt = `
     Give me 5 meals that are similar to "${meal}".
     Consider ingredients, cuisine, flavor profile, and preparation style.
-    Respond with a clean bullet list only. No extra text.
+    Respond only with the meals' names, each on a new line.
+    Do not add any text before or afterwards and do not write bullet points.
   `;
 
   const response = await ollama.chat({
@@ -23,5 +24,5 @@ export async function getSimilarMeals(meal) {
     ]
   });
 
-  return response.message.content;
+  return response.message.content.split('\n');
 }

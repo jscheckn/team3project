@@ -19,7 +19,14 @@ export default SeeRecipes;
 
 export function MealsListWithButtonDisplay() {
     
-    const [alternateRecipes, setAlternateRecipes] = useState<{[key: string]: string[]} | null>(null);
+  const [alternateRecipes, setAlternateRecipes] = useState<{[key: string]: string[]}>({});
+  const handleClick = (name: string) => {
+    getSimilarMeals(name).then(meals => {
+      let recipes = Object.assign({}, alternateRecipes);
+      recipes[name] = meals;
+      setAlternateRecipes(recipes);
+    });
+  };
 
   return FetchingFragment(
   '/api/meals',
@@ -42,13 +49,13 @@ export function MealsListWithButtonDisplay() {
               {m.items.map((i: any) => (
                 <li key={i.name}>
                   {i.name}
-                  <button id="RecipeButton" onClick={() => handleClick(m.items[0].name)}>
+                  <button id="RecipeButton" onClick={() => handleClick(i.name)}>
                     See Alternate Recipes
                   </button>
 
-                  {alternateRecipes && alternateRecipes[m.items[0].name] && (
+                  {alternateRecipes && alternateRecipes[i.name] && (
                       <ul>
-                        {alternateRecipes[m.items[0].name].map((recipe: string, idx: number) => (
+                        {alternateRecipes[i.name].map((recipe: string, idx: number) => (
                           <li key={idx}>{recipe}</li>
                         ))}
                       </ul>
@@ -65,8 +72,8 @@ export function MealsListWithButtonDisplay() {
 );
 }
 
-async function handleClick(name: any) {
-  const res = await fetch(`/api/similar/${name}`);
+async function getSimilarMeals(name: string): Promise<string[]> {
+  const res = await fetch(`/api/recipes/similar/${name}`);
   const data = await res.json();
   return data.meals
 }
