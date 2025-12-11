@@ -42,6 +42,8 @@ router.get('/', async (req, res) => {
 				total = totals.calories;
 			} else if (type.includes('protein')) {
 				total = totals.protein;
+			} else if (type.includes('fiber')) {
+				total = totals.fiber;
 			}
       //helper function to check if goal was met and difference
       const compareWithGoal = (total, goal) => {

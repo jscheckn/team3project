@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 const mealItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   calories: { type: Number, required: true },
-  protein: { type: Number }
+  protein: { type: Number },
+  fiber: { type: Number }
   //can add more nutrition fields later
 });
 

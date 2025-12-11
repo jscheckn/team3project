@@ -10,6 +10,7 @@ export async function saveMealToServer(meal: {
         name: string;
         calories?: number;
         protein?: number;
+        fiber?: number;
         // add more nutrition fields later
     }[],
     notes?: string
@@ -23,6 +24,8 @@ export function AddMeal() {
 
   const [name, setName] = useState('');
   const [calories, setCalories] = useState<number | ''>('');
+  const [protein, setProtein] = useState<number | ''>('');
+  const [fiber, setFiber] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
   const [ingredients, setIngredients] = useState<string[]>([]);
 
@@ -34,6 +37,8 @@ export function AddMeal() {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
   const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => setCalories(e.target.value === '' ? '' : Number(e.target.value));
+  const handleProteinChange = (e: ChangeEvent<HTMLInputElement>) => setProtein(e.target.value === '' ? '' : Number(e.target.value));
+  const handleFiberChange = (e: ChangeEvent<HTMLInputElement>) => setFiber(e.target.value === '' ? '' : Number(e.target.value));
   const handleNotesChange = (e: ChangeEvent<HTMLInputElement>) => setNotes(e.target.value);
 
   async function getCaptionFromImage(file: File) {
@@ -66,6 +71,8 @@ export function AddMeal() {
       items: [{
         name,
         calories: calories === '' ? undefined : calories,
+        protein: protein === '' ? undefined : protein,
+        fiber: fiber === '' ? undefined : fiber
       }],
       notes
     };
@@ -73,6 +80,8 @@ export function AddMeal() {
     // clear form
     setName('');
     setCalories('');
+    setProtein('');
+    setFiber('');
     setNotes('');
     setSelectedFile(null);
     setFilePreview(null);
@@ -127,6 +136,12 @@ export function AddMeal() {
 
           <label htmlFor="meal-calories">Calories</label>
           <input id="meal-calories" type="number" value={calories} onChange={handleCaloriesChange} />
+
+          <label htmlFor="meal-protein">Protein</label>
+          <input id="meal-protein" type="number" value={protein} onChange={handleProteinChange} />
+
+          <label htmlFor="meal-fiber">Fiber</label>
+          <input id="meal-fiber" type="number" value={fiber} onChange={handleFiberChange} />
 
           <label htmlFor="meal-notes">Notes</label>
           <input id="meal-notes" type="text" value={notes} onChange={handleNotesChange} />
@@ -217,6 +232,7 @@ export function MealsList() {
                 <li key={i.name}>
                   {i.name} — {i.calories} calories
                   {i.protein !== undefined && <>, {i.protein} g protein</>}
+                  {i.fiber !== undefined && <>, {i.fiber} g fiber</>}
                 </li>
               ))}
             </ul >

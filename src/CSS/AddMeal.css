@@ -44,7 +44,7 @@
   margin-bottom: 10px ;
   text-align: center;
 }
-#meal-name, #meal-calories, #meal-notes{
+#meal-name, #meal-calories, #meal-protein, #meal-fiber, #meal-notes{
   padding: 5px;
   background-color: #FFFEE9; 
   border-radius: 5px;
