@@ -1,43 +1,80 @@
 import express from 'express';
 import multer from 'multer';
-import { ImageAnnotatorClient } from '@google-cloud/vision';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const keyPath = path.join(__dirname, '..', 'vision-key.json');
-
+import { Ollama } from 'ollama';
 
 const router = express.Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB max
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-const visionClient = new ImageAnnotatorClient({
-  keyFilename: keyPath
+const ollama = new Ollama({ 
+  host: 'http://localhost:11434',
+  timeout: 300000 
 });
 
 
-function makeCaptionFromVision(labels) {
-  if (!labels || !labels.length) return "Error in uploading image";
+async function getCaptionFromOllama(imageBuffer) {
+  try {
+    const base64Image = imageBuffer.toString('base64');
+    
+    const response = await ollama.generate({
+      model: 'llava',
+      prompt: `Identify this food in 2-3 words and list 5 ingredients.
 
-  const generic = [
-    "food", "dish", "cuisine", "ingredient", "meal", "fried food", "fast food"
-  ];
+Format:
+Caption: [food name]
+Ingredients: [item1], [item2], [item3], [item4], [item5]`,
+      images: [base64Image],
+      stream: false,
+      options: {
+        num_predict: 100,       // improve speed
+        temperature: 0.1,      
+        top_k: 10,             
+        top_p: 0.5,             
+        repeat_penalty: 1.1,    
+      }
+    });
 
-  const filtered = labels.filter(
-    l => !generic.includes(l.description.toLowerCase())
-  );
-
-  const best = filtered.length ? filtered[0].description : labels[0].description;
-  
-  return best;
+    return parseOllamaResponse(response.response);
+  } catch (err) {
+    console.error("Ollama error:", err);
+    throw err;
+  }
 }
 
-// POST /api/spoonacular/caption
+function parseOllamaResponse(text) {
+  console.log("Raw Ollama response:", text);
+  
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  let caption = "Unknown food";
+  let ingredients = [];
+
+  for (const line of lines) {
+    const lower = line.toLowerCase();
+    
+    if (lower.startsWith('caption:')) {
+      caption = line.substring(line.indexOf(':') + 1).trim();
+    } else if (lower.startsWith('ingredients:')) {
+      const ingText = line.substring(line.indexOf(':') + 1).trim();
+      ingredients = ingText
+        .split(',')
+        .map(i => i.trim())
+        .filter(i => i.length > 0 && i.toLowerCase() !== 'none');
+    }
+  }
+
+ 
+  if (ingredients.length === 0) {
+    // look for words in the response
+    const words = text.match(/\b[a-zA-Z]+(?:\s+[a-zA-Z]+)?\b/g) || [];
+    ingredients = [...new Set(words.slice(0, 8))]; //unique words
+  }
+
+  return { caption, ingredients };
+}
+
 router.post('/caption', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
@@ -46,30 +83,21 @@ router.post('/caption', upload.single('image'), async (req, res) => {
       });
     }
 
-    const [visionResult] = await visionClient.labelDetection({
-      image: { content: req.file.buffer }
-    });
+    const { caption, ingredients } = await getCaptionFromOllama(req.file.buffer);
 
-    const labels = visionResult.labelAnnotations || [];
-
-
-    const caption = makeCaptionFromVision(labels);
-    console.log("VISION LABELS:", labels.map(l => l.description));
-    const ingredients = labels
-      .filter(l => l.description)
-      .slice(0, 10)
-      .map(l => l.description);
+    console.log("OLLAMA CAPTION:", caption);
+    console.log("OLLAMA INGREDIENTS:", ingredients);
 
     return res.json({
       caption,
       ingredients,
-      raw: labels
+      model: 'llava'
     });
 
   } catch (err) {
-    console.error("Google Vision error:", err);
+    console.error("Ollama processing error:", err);
     return res.status(500).json({
-      error: "Google Vision request failed",
+      error: "Ollama request failed",
       details: err.message
     });
   }

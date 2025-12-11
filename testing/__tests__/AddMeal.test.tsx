@@ -2,7 +2,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
-import {AddMeal, saveMealToServer} from '../../src/pages/addMeal'
+import {AddMeal} from '../../src/pages/addMeal'
+import { saveMealToServer } from '../../src/data/saveMeal'
 import CustomWebcam from '../../src/Components/webCam'
 import { useState } from 'react'
 import '@testing-library/jest-dom/vitest'
@@ -14,7 +15,6 @@ import '@testing-library/jest-dom/vitest'
 
 // HAVE TO MOCK WEBCAM
 vi.mock('../../src/Components/webCam', () => {
-  const React = require('react')
   return {
     default: () => {
       const [imgSrc, setImgSrc] = useState<string | null>(null)
