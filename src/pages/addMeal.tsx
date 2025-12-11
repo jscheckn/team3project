@@ -1,19 +1,9 @@
 import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import CustomWebcam from '../Components/webCam';
 import FetchingFragment from '../Components/FetchingFragment';
-import saveToServer from '../data/saveToServer';
+import { saveMealToServer } from '../data/saveMeal';
 import "../CSS/AddMeal.css"
 
-async function saveMealToServer(meal: {
-    items: {
-        name: string;
-        calories?: number;
-        protein?: number;
-    }[],
-    notes?: string
-}) {
-    return saveToServer('/api/meals', meal);
-}
 
 export function AddMeal() {
   const [name, setName] = useState('');

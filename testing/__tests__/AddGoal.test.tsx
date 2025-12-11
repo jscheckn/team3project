@@ -52,7 +52,7 @@ describe('AddGoal page', () => {
     await userEvent.selectOptions(mainDropdown, GoalType.Caloric)
 
    
-    const scaleDropdown = screen.getByLabelText(/What type of goal are you setting/i)
+    const scaleDropdown = screen.getByLabelText(/Time Scale/i)
     expect(scaleDropdown).toHaveValue(GoalScale.Week)
 
     // Change check
