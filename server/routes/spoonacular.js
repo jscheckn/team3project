@@ -14,27 +14,6 @@ const ollama = new Ollama({
   timeout: 300000 
 });
 
-let modelWarmedUp = false;
-
-async function ensureModelLoaded() {
-  if (modelWarmedUp) return;
-  
-  try {
-    console.log('Loading Ollama model...');
-    await ollama.generate({
-      model: 'llava',
-      prompt: 'warmup',
-      images: [],
-      stream: false
-    });
-    modelWarmedUp = true;
-    console.log('Model loaded and ready');
-  } catch (err) {
-    console.log('Model warmup failed:', err.message);
-  }
-}
-
-ensureModelLoaded();
 
 async function getCaptionFromOllama(imageBuffer) {
   try {
@@ -103,9 +82,6 @@ router.post('/caption', upload.single('image'), async (req, res) => {
         error: "No image uploaded (field name must be 'image')"
       });
     }
-
-    // make sure model is loaded before processing
-    await ensureModelLoaded();
 
     const { caption, ingredients } = await getCaptionFromOllama(req.file.buffer);
 

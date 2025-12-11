@@ -18,12 +18,14 @@ export default SeeRecipes;
 
 
 export function MealsListWithButtonDisplay() {
-    
+  const [loadingMeal, setLoadingMeal] = useState<string | null>(null);
   const [alternateRecipes, setAlternateRecipes] = useState<{[key: string]: string[]}>({});
   const handleClick = (name: string) => {
+    setLoadingMeal(name);
     getSimilarMeals(name).then(meals => {
       let recipes = Object.assign({}, alternateRecipes);
       recipes[name] = meals;
+      setLoadingMeal(null);
       setAlternateRecipes(recipes);
     });
   };
@@ -42,30 +44,29 @@ export function MealsListWithButtonDisplay() {
     }
 
     return (
-      <div id="textOnPage">
-        {meals.map((m: any) => (
-          <li key={m._id}>
-            <ul id="textOnPage">
-              {m.items.map((i: any) => (
-                <li key={i.name}>
-                  {i.name}
-                  <button id="RecipeButton" onClick={() => handleClick(i.name)}>
-                    See Alternate Recipes
-                  </button>
-
-                  {alternateRecipes && alternateRecipes[i.name] && (
-                      <ul>
-                        {alternateRecipes[i.name].map((recipe: string, idx: number) => (
-                          <li key={idx}>{recipe}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
+      <div id="textOnPage" style={{ padding: '20px' }}>
+        {meals.map((m: any) => {
+          const mealName = m.items[0]?.name || 'Unnamed Meal';
+          return (
+            <div key={m._id}>
+              <strong>{mealName}</strong>
+              <button 
+                id="RecipeButton" 
+                onClick={() => handleClick(mealName)}
+              >
+                {loadingMeal === mealName ? 'Loading...' : 'See Alternate Recipes'}
+              </button>
+              
+              {alternateRecipes && alternateRecipes[mealName] && (
+                <ul style={{ marginTop: '10px' }}>
+                  {alternateRecipes[mealName].map((recipe: string, idx: number) => (
+                    <li key={idx}>{recipe}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   }

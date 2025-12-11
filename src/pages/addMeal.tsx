@@ -4,7 +4,7 @@ import FetchingFragment from '../Components/FetchingFragment';
 import saveToServer from '../data/saveToServer';
 import "../CSS/AddMeal.css"
 
-export async function saveMealToServer(meal: {
+async function saveMealToServer(meal: {
     items: {
         name: string;
         calories?: number;
@@ -74,7 +74,7 @@ export function AddMeal() {
     
     const payload = {
       items,
-      notes: notes || (ingredients.length > 0 ? `Detected ingredients: ${ingredients.join(', ')}` : undefined)
+      notes: notes || undefined
     };
     
     await saveMealToServer(payload);
@@ -275,20 +275,27 @@ export function MealsList() {
     meals => {
       if (!meals.length) return <div><h3 id="textOnPage">No saved meals yet.</h3></div>;
       return <ul id="textOnPage">
-        {meals.map((m: any) => (
-          <li key={m._id}>
-            <ul id="textOnPage">
-              {m.items.map((i: any, idx: number) => (
-                <li key={idx}>
-                  {i.name}
-                  {i.calories !== undefined && <> — {i.calories} calories</>}
-                  {i.protein !== undefined && <>, {i.protein} g protein</>}
-                </li>
-              ))}
-            </ul>
-            {m.notes !== undefined && <p id="textOnPage">Notes: {m.notes}</p>}
-          </li>
-        ))}
+        {meals.map((m: any) => {
+          // First item is the meal name, rest are ingredients
+          const mealName = m.items[0]?.name || 'Unnamed Meal';
+          const ingredients = m.items.slice(1);
+          const calories = m.items[0]?.calories;
+          
+          return (
+            <li key={m._id} style={{ marginBottom: '20px' }}>
+              <div>
+                <strong>Meal Name:</strong> {mealName}
+                {calories !== undefined && <> ({calories} calories)</>}
+              </div>
+              {ingredients.length > 0 && (
+                <div>
+                  <strong>Ingredients:</strong> {ingredients.map((i : any) => i.name).join(', ')}
+                </div>
+              )}
+              {m.notes && <div><strong>Notes:</strong> {m.notes}</div>}
+            </li>
+          );
+        })}
       </ul>;
     }
   );
