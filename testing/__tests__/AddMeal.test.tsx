@@ -7,6 +7,8 @@ import { saveMealToServer } from '../../src/data/saveMeal'
 import CustomWebcam from '../../src/Components/webCam'
 import { useState } from 'react'
 import '@testing-library/jest-dom/vitest'
+import {MemoryRouter} from "react-router-dom";
+import {AuthProvider} from "../../src/Components/AuthProvider";
 
 
 
@@ -49,7 +51,7 @@ describe('AddMeal page', () => {
   })
 
   it('shows image after taken', async () => {
-    render(<AddMeal />)
+    render(<MemoryRouter><AddMeal /></MemoryRouter>)
 
     // take pic 
     const takeImageButton = screen.getByText(/Take Image/i)

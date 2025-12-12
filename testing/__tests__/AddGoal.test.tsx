@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event'
 import {describe, it, expect, vi} from 'vitest'
 import {AddGoal, saveGoalToServer} from '../../src/pages/addGoal'
 import {GoalScale, GoalType} from '../../src/data/types'
+import {MemoryRouter} from "react-router-dom";
+import {AddMeal} from "../../src/pages/addMeal";
+import {AuthProvider} from "../../src/Components/AuthProvider";
 
 // https://vitest.dev/guide/browser/component-testing.html
 // I reduced the redundent lists by makign the lists for dropdowns for selecting time scale and its lables 
@@ -29,7 +32,7 @@ describe('AddGoal page', () => {
   })
 
   it('switches between goals', async () => {
-    render(<AddGoal />)
+    render(<MemoryRouter><AddGoal /></MemoryRouter>)
 
     // Get the main dropdown
     const mainDropdown = screen.getByLabelText(/Add Goal/i)
@@ -46,7 +49,7 @@ describe('AddGoal page', () => {
   })
 
   it('updates CalForm fields correctly', async () => {
-    render(<AddGoal />)
+    render(<MemoryRouter><AddGoal /></MemoryRouter>)
 
     const mainDropdown = screen.getByLabelText(/Add Goal/i)
     await userEvent.selectOptions(mainDropdown, GoalType.Caloric)
