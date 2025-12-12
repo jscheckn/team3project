@@ -300,7 +300,7 @@ export function MealsList() {
                 {(calories !== undefined && protein !== undefined) && <>, </>}
                 {protein !== undefined && <>{protein} g protein</>}
                 {(protein !== undefined && fiber !== undefined) && <>, </>}
-                {calories !== undefined && <>{fiber} g fiber</>}
+                {fiber !== undefined && <>{fiber} g fiber</>}
                 {(calories !== undefined || protein !== undefined || fiber !== undefined) && <>)</>}
               </div>
               {ingredients.length > 0 && (
